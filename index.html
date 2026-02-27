@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Aayan Globe — v1.0</title>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600;700&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#010409; --panel:rgba(5,12,28,0.92); --border:#0d2137;
+  --accent:#00ffe7; --accent2:#ff2d6b; --accent3:#ffc300; --dim:#2a4060; --text:#a0c4e0;
+}
+body{
+  background:var(--bg);color:var(--text);
+  font-family:'Rajdhani',sans-serif;
+  height:100vh;overflow:hidden;
+}
+body::after{
+  content:'';position:fixed;inset:0;
+  background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,255,231,0.008) 3px,rgba(0,255,231,0.008) 4px);
+  pointer-events:none;z-index:9999;
+}
+#c{position:fixed;inset:0;width:100%;height:100%;display:block;}
+
+/* ── LOAD SCREEN ── */
+#loadScreen{
+  position:fixed;inset:0;z-index:500;
+  background:var(--bg);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.2rem;
+}
+.load-title{font-family:'Orbitron',monospace;font-size:.65rem;letter-spacing:.5em;color:var(--accent)}
+.load-pct{font-family:'Orbitron',monospace;font-size:2.2rem;font-weight:900;color:var(--accent)}
+.load-bar-outer{width:320px;height:3px;background:rgba(0,255,231,.08)}
+.load-bar-inner{height:100%;width:0%;background:var(--accent);transition:width .4s ease;box-shadow:0 0 16px var(--accent)}
+.load-msg{font-size:.7rem;letter-spacing:.2em;color:var(--dim);text-transform:uppercase;font-family:'Rajdhani',sans-serif}
+
+/* ── HUD ── */
+#hud{position:fixed;inset:0;pointer-events:none;z-index:20;display:none;}
+
+.hdr{
+  position:absolute;top:0;left:0;right:0;
+  padding:.8rem 1.4rem;
+  display:flex;align-items:center;justify-content:space-between;
+  background:linear-gradient(180deg,rgba(1,4,9,.95) 0%,transparent 100%);
+  border-bottom:1px solid rgba(0,255,231,.06);
+}
+.hdr-name{font-family:'Orbitron',monospace;font-size:1rem;font-weight:900;color:#fff;letter-spacing:.1em;}
+.hdr-name span{color:var(--accent)}
+.hdr-ver{font-family:'Orbitron',monospace;font-size:.48rem;letter-spacing:.4em;color:var(--accent3);margin-top:.1rem}
+.hdr-center{display:flex;align-items:center;gap:.5rem;font-family:'Orbitron',monospace;font-size:.6rem;letter-spacing:.2em;color:var(--accent)}
+.live-dot{width:7px;height:7px;border-radius:50%;background:var(--accent);box-shadow:0 0 8px var(--accent);animation:blink 1.4s ease-in-out infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+.hdr-time{font-family:'Orbitron',monospace;font-size:.6rem;color:var(--dim);letter-spacing:.15em}
+
+.panel{
+  position:absolute;z-index:20;background:var(--panel);border:1px solid var(--border);
+  padding:.8rem 1rem;backdrop-filter:blur(8px);
+}
+.panel-title{font-family:'Orbitron',monospace;font-size:.45rem;letter-spacing:.35em;color:var(--dim);text-transform:uppercase;margin-bottom:.7rem;padding-bottom:.4rem;border-bottom:1px solid var(--border)}
+
+/* Location panel - bottom left */
+#locPanel{
+  bottom:14px;left:14px;min-width:200px;
+  clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,0 100%);
+}
+.loc-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:.35rem;font-size:.7rem}
+.loc-row:last-child{margin-bottom:0}
+.loc-key{color:var(--dim);letter-spacing:.05em;font-family:'Rajdhani',sans-serif}
+.loc-val{font-family:'Orbitron',monospace;font-size:.6rem;font-weight:700;color:var(--accent3);text-align:right;max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.loc-status{display:flex;align-items:center;gap:.4rem;margin-top:.6rem;padding-top:.5rem;border-top:1px solid var(--border);font-family:'Orbitron',monospace;font-size:.5rem;color:var(--accent);letter-spacing:.2em}
+.loc-status-dot{width:5px;height:5px;border-radius:50%;background:var(--accent);animation:blink 1s infinite}
+
+/* Stats panel - bottom right */
+#statsPanel{
+  bottom:14px;right:14px;min-width:150px;
+  clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,0 100%);
+}
+.stat-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:.35rem;font-size:.7rem}
+.stat-row:last-child{margin-bottom:0}
+.stat-label{color:var(--dim);letter-spacing:.05em;font-family:'Rajdhani',sans-serif}
+.stat-val{font-family:'Orbitron',monospace;font-size:.6rem;font-weight:700;color:var(--accent)}
+
+/* Controls panel - top right */
+#ctrlPanel{top:62px;right:14px;clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,0 100%)}
+.ctrl-row{display:flex;align-items:center;gap:.5rem;margin-bottom:.3rem;font-size:.65rem;color:var(--dim)}
+.ctrl-row:last-child{margin-bottom:0}
+.ctrl-key{font-family:'Orbitron',monospace;font-size:.45rem;color:var(--accent);border:1px solid var(--dim);padding:.1rem .35rem;letter-spacing:.1em}
+
+/* LOD panel - top left */
+#lodPanel{top:62px;left:14px;clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,0 100%)}
+.lod-bar-outer{width:100%;height:2px;background:var(--border);margin-top:.3rem;border-radius:1px}
+.lod-bar-inner{height:100%;background:var(--accent);transition:width .4s ease;border-radius:1px;box-shadow:0 0 6px var(--accent)}
+#lodLabel{font-family:'Orbitron',monospace;font-size:.55rem;color:var(--accent);letter-spacing:.2em}
+#zoomVal{font-family:'Orbitron',monospace;font-size:1.4rem;font-weight:900;color:var(--accent);line-height:1}
+
+/* Corner brackets */
+.bracket{position:absolute;z-index:15;width:28px;height:28px;border-color:var(--accent);border-style:solid;opacity:.3}
+.bracket.tl{top:54px;left:12px;border-width:2px 0 0 2px}
+.bracket.tr{top:54px;right:12px;border-width:2px 2px 0 0}
+.bracket.bl{bottom:12px;left:12px;border-width:0 0 2px 2px}
+.bracket.br{bottom:12px;right:12px;border-width:0 2px 2px 0}
+
+/* Floating location label */
+#locationLabel{
+  position:fixed;pointer-events:none;z-index:30;
+  transform:translate(-50%,-100%);
+  opacity:0;transition:opacity .3s;
+}
+.loc-label-box{
+  background:rgba(5,12,28,.9);border:1px solid var(--accent3);
+  padding:.4rem .7rem;
+  clip-path:polygon(0 0,calc(100% - 8px) 0,100% 8px,100% 100%,0 100%);
+  white-space:nowrap;
+}
+.loc-label-name{font-family:'Orbitron',monospace;font-size:.6rem;font-weight:700;color:var(--accent3);letter-spacing:.1em}
+.loc-label-sub{font-size:.55rem;color:var(--dim);letter-spacing:.05em;margin-top:.2rem}
+.loc-label-line{
+  width:1px;height:20px;background:linear-gradient(180deg,var(--accent3),transparent);
+  margin:0 auto;
+}
+</style>
+</head>
+<body>
+
+<!-- LOAD SCREEN -->
+<div id="loadScreen">
+  <div class="load-title">Aayan Systems — Globe v1.0</div>
+  <div class="load-pct" id="loadPct">0%</div>
+  <div class="load-bar-outer"><div class="load-bar-inner" id="loadBar"></div></div>
+  <div class="load-msg" id="loadMsg">Initialising renderer...</div>
+</div>
+
+<!-- THREE.JS CANVAS -->
+<canvas id="c"></canvas>
+
+<!-- HUD OVERLAY -->
+<div id="hud">
+  <div class="hdr">
+    <div>
+      <div class="hdr-name"><span>Aayan</span> Globe</div>
+      <div class="hdr-ver">VERSION 1.0 — DOT FIELD ENGINE</div>
+    </div>
+    <div class="hdr-center"><div class="live-dot"></div>LIVE TRACKING</div>
+    <div class="hdr-time" id="clock">--:--:--</div>
+  </div>
+
+  <div class="bracket tl"></div><div class="bracket tr"></div>
+  <div class="bracket bl"></div><div class="bracket br"></div>
+
+  <!-- LOD panel -->
+  <div class="panel" id="lodPanel">
+    <div class="panel-title">Render Density</div>
+    <div id="zoomVal">--</div>
+    <div id="lodLabel">MED</div>
+    <div class="lod-bar-outer"><div class="lod-bar-inner" id="lodBar" style="width:50%"></div></div>
+  </div>
+
+  <!-- Controls -->
+  <div class="panel" id="ctrlPanel">
+    <div class="panel-title">Controls</div>
+    <div class="ctrl-row"><span class="ctrl-key">DRAG</span>Rotate globe</div>
+    <div class="ctrl-row"><span class="ctrl-key">SCROLL</span>Zoom in/out</div>
+    <div class="ctrl-row"><span class="ctrl-key">TOUCH</span>Pinch to zoom</div>
+  </div>
+
+  <!-- Globe stats -->
+  <div class="panel" id="statsPanel">
+    <div class="panel-title">Globe Stats</div>
+    <div class="stat-row"><span class="stat-label">Dots</span><span class="stat-val" id="dotCount">--</span></div>
+    <div class="stat-row"><span class="stat-label">Borders</span><span class="stat-val" id="borderCount">--</span></div>
+    <div class="stat-row"><span class="stat-label">Countries</span><span class="stat-val" id="countryCount">--</span></div>
+    <div class="stat-row"><span class="stat-label">FPS</span><span class="stat-val" id="fpsVal">--</span></div>
+  </div>
+
+  <!-- Location -->
+  <div class="panel" id="locPanel">
+    <div class="panel-title">Your Location</div>
+    <div class="loc-row"><span class="loc-key">City</span><span class="loc-val" id="locCity">Locating...</span></div>
+    <div class="loc-row"><span class="loc-key">Country</span><span class="loc-val" id="locCountry">--</span></div>
+    <div class="loc-row"><span class="loc-key">Lat</span><span class="loc-val" id="locLat">--</span></div>
+    <div class="loc-row"><span class="loc-key">Lng</span><span class="loc-val" id="locLng">--</span></div>
+    <div class="loc-status"><div class="loc-status-dot"></div>SIGNAL LOCKED</div>
+  </div>
+</div>
+
+<!-- Floating 3D label -->
+<div id="locationLabel">
+  <div class="loc-label-box">
+    <div class="loc-label-name" id="locLabelName">--</div>
+    <div class="loc-label-sub" id="locLabelSub">--</div>
+  </div>
+  <div class="loc-label-line"></div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/topojson-client@3/dist/topojson-client.min.js"></script>
+<script>
+// ═══════════════════════════════════════════════
+// AAYAN GLOBE v1.0
+// ═══════════════════════════════════════════════
+
+const R   = 200;   // globe radius
+let scene, camera, renderer, globeGroup;
+let dotMeshes = {};          // {low, med, high}
+let currentLOD = 'med';
+let borderLines, locationObj;
+let isDragging = false, prevMouse = {x:0,y:0};
+let rotVel = {x:0, y:0};
+let camDist = 580;
+let frameTimes = [];
+let userLat = null, userLng = null;
+
+// ── Load helpers ──────────────────────────────
+function setLoad(pct, msg){
+  document.getElementById('loadBar').style.width = pct+'%';
+  document.getElementById('loadPct').textContent = pct+'%';
+  document.getElementById('loadMsg').textContent = msg;
+}
+
+// ── Coordinate converter ──────────────────────
+function ll2xyz(lat, lng, r){
+  const phi   = (90 - lat) * Math.PI / 180;
+  const theta = (lng + 180) * Math.PI / 180;
+  return new THREE.Vector3(
+    -r * Math.sin(phi) * Math.cos(theta),
+     r * Math.cos(phi),
+     r * Math.sin(phi) * Math.sin(theta)
+  );
+}
+
+// ── Glow dot texture ─────────────────────────
+function makeDotTex(){
+  const s = 64, c = document.createElement('canvas');
+  c.width = c.height = s;
+  const ctx = c.getContext('2d');
+  const g = ctx.createRadialGradient(s/2,s/2,0,s/2,s/2,s/2);
+  g.addColorStop(0,   'rgba(255,255,255,1)');
+  g.addColorStop(0.35,'rgba(255,255,255,0.75)');
+  g.addColorStop(0.7, 'rgba(255,255,255,0.15)');
+  g.addColorStop(1,   'rgba(255,255,255,0)');
+  ctx.fillStyle = g;
+  ctx.beginPath(); ctx.arc(s/2,s/2,s/2,0,Math.PI*2); ctx.fill();
+  return new THREE.CanvasTexture(c);
+}
+
+// ── Stars ─────────────────────────────────────
+function makeStars(){
+  const n = 4000;
+  const pos = new Float32Array(n*3), col = new Float32Array(n*3);
+  for(let i=0;i<n;i++){
+    const theta = Math.random()*Math.PI*2;
+    const phi   = Math.acos(2*Math.random()-1);
+    const r     = 1800 + Math.random()*600;
+    pos[i*3]   = r*Math.sin(phi)*Math.cos(theta);
+    pos[i*3+1] = r*Math.cos(phi);
+    pos[i*3+2] = r*Math.sin(phi)*Math.sin(theta);
+    const b = 0.3 + Math.random()*0.7;
+    col[i*3] = b*0.85; col[i*3+1] = b*0.9; col[i*3+2] = b;
+  }
+  const geo = new THREE.BufferGeometry();
+  geo.setAttribute('position', new THREE.BufferAttribute(pos,3));
+  geo.setAttribute('color',    new THREE.BufferAttribute(col,3));
+  scene.add(new THREE.Points(geo, new THREE.PointsMaterial({
+    size:1.4, vertexColors:true, transparent:true, opacity:0.85
+  })));
+}
+
+// ── Atmosphere ───────────────────────────────
+function makeAtmosphere(){
+  [[R*1.04,0x0044cc,0.07],[R*1.12,0x0022aa,0.03],[R*1.25,0x001155,0.015]].forEach(([r,c,o])=>{
+    globeGroup.add(new THREE.Mesh(
+      new THREE.SphereGeometry(r,64,64),
+      new THREE.MeshBasicMaterial({color:c,transparent:true,opacity:o,side:THREE.BackSide})
+    ));
+  });
+}
+
+// ── Build dot cloud ───────────────────────────
+function buildDots(resolution, isLand, tex){
+  const landC  = new THREE.Color(0x00ffe7);
+  const waterC = new THREE.Color(0x0033bb);
+  const pos=[], col=[];
+  let count = 0;
+
+  for(let lat=-90;lat<=90;lat+=resolution){
+    for(let lng=-180;lng<180;lng+=resolution){
+      const land = isLand(lat,lng);
+      const v = ll2xyz(lat,lng,R);
+      pos.push(v.x,v.y,v.z);
+      const c = land ? landC : waterC;
+      col.push(c.r,c.g,c.b);
+      count++;
+    }
+  }
+
+  const geo = new THREE.BufferGeometry();
+  geo.setAttribute('position', new THREE.BufferAttribute(new Float32Array(pos),3));
+  geo.setAttribute('color',    new THREE.BufferAttribute(new Float32Array(col),3));
+
+  const dotSize = {3.0:4.5, 2.0:3.2, 1.2:2.0}[resolution] || 3.2;
+
+  const mat = new THREE.PointsMaterial({
+    size: dotSize,
+    map: tex,
+    vertexColors: true,
+    transparent: true,
+    opacity: 0.95,
+    blending: THREE.AdditiveBlending,
+    depthWrite: false,
+    sizeAttenuation: true,
+  });
+  return { mesh: new THREE.Points(geo, mat), count };
+}
+
+// ── Build country borders ─────────────────────
+function buildBorders(mesh){
+  const pos = [];
+  const lines = mesh.type==='MultiLineString' ? mesh.coordinates
+              : mesh.type==='LineString'      ? [mesh.coordinates]
+              : [];
+  let segs = 0;
+  for(const line of lines){
+    for(let i=0;i<line.length-1;i++){
+      const [l1,a1]=line[i], [l2,a2]=line[i+1];
+      const p1=ll2xyz(a1,l1,R+0.8), p2=ll2xyz(a2,l2,R+0.8);
+      pos.push(p1.x,p1.y,p1.z, p2.x,p2.y,p2.z);
+      segs++;
+    }
+  }
+  const geo = new THREE.BufferGeometry();
+  geo.setAttribute('position', new THREE.BufferAttribute(new Float32Array(pos),3));
+  borderLines = new THREE.LineSegments(geo, new THREE.LineBasicMaterial({
+    color:0x00ffe7, transparent:true, opacity:0.32
+  }));
+  globeGroup.add(borderLines);
+  document.getElementById('borderCount').textContent = segs.toLocaleString();
+}
+
+// ── Location marker ───────────────────────────
+function buildLocationMarker(lat, lng, city, country){
+  const pos = ll2xyz(lat, lng, R+2);
+  const group = new THREE.Group();
+
+  // Core dot
+  const core = new THREE.Mesh(
+    new THREE.SphereGeometry(3.5,16,16),
+    new THREE.MeshBasicMaterial({color:0xffc300})
+  );
+  group.add(core);
+
+  // Inner ring
+  const ring1 = new THREE.Mesh(
+    new THREE.RingGeometry(5.5,7,48),
+    new THREE.MeshBasicMaterial({color:0xffc300,transparent:true,opacity:0.8,side:THREE.DoubleSide})
+  );
+  const ring2 = new THREE.Mesh(
+    new THREE.RingGeometry(10,11.5,48),
+    new THREE.MeshBasicMaterial({color:0xffc300,transparent:true,opacity:0.4,side:THREE.DoubleSide})
+  );
+  group.add(ring1); group.add(ring2);
+
+  // Orient rings tangent to globe surface (normal = outward from center)
+  const normal = pos.clone().normalize();
+  const q = new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0,0,1), normal);
+  ring1.quaternion.copy(q);
+  ring2.quaternion.copy(q);
+
+  group.position.copy(pos);
+  globeGroup.add(group);
+
+  locationObj = { group, ring1, ring2, lat, lng, city, country };
+
+  // Update side panels
+  document.getElementById('locCity').textContent = city || '--';
+  document.getElementById('locCountry').textContent = country || '--';
+  document.getElementById('locLat').textContent = lat.toFixed(3)+'°';
+  document.getElementById('locLng').textContent = lng.toFixed(3)+'°';
+  document.getElementById('locLabelName').textContent = city || 'Your Location';
+  document.getElementById('locLabelSub').textContent = `${lat.toFixed(2)}° · ${lng.toFixed(2)}°`;
+}
+
+// ── Update floating label position ───────────
+function updateLabel(){
+  if(!locationObj) return;
+  const el = document.getElementById('locationLabel');
+  const pos3 = locationObj.group.position.clone();
+
+  // Transform to world space
+  globeGroup.updateMatrixWorld();
+  pos3.applyMatrix4(globeGroup.matrixWorld);
+
+  // Check visibility (is marker on facing hemisphere?)
+  const invMat = new THREE.Matrix4().copy(globeGroup.matrixWorld).invert();
+  const camLocal = camera.position.clone().applyMatrix4(invMat).normalize();
+  const markerLocal = locationObj.group.position.clone().normalize();
+  const facing = markerLocal.dot(camLocal) > 0.05;
+
+  if(!facing){ el.style.opacity='0'; return; }
+
+  // Project to screen
+  const proj = pos3.clone().project(camera);
+  if(proj.z > 1){ el.style.opacity='0'; return; }
+
+  const x = (proj.x*0.5+0.5)*window.innerWidth;
+  const y = (-proj.y*0.5+0.5)*window.innerHeight;
+  el.style.left  = x+'px';
+  el.style.top   = y+'px';
+  el.style.opacity = '1';
+}
+
+// ── LOD switching ─────────────────────────────
+function updateLOD(){
+  let target;
+  if     (camDist < 360) target='high';
+  else if(camDist < 650) target='med';
+  else                   target='low';
+
+  if(target!==currentLOD && dotMeshes[target]){
+    dotMeshes[currentLOD].visible=false;
+    dotMeshes[target].visible=true;
+    currentLOD=target;
+    document.getElementById('lodLabel').textContent = target.toUpperCase();
+    const pct={low:25,med:55,high:90}[target];
+    document.getElementById('lodBar').style.width=pct+'%';
+    document.getElementById('dotCount').textContent = dotMeshes[target].geometry.attributes.position.count.toLocaleString();
+  }
+  document.getElementById('zoomVal').textContent = Math.round(camDist);
+}
+
+// ── Event handlers ────────────────────────────
+function setupEvents(){
+  const c = renderer.domElement;
+
+  // Mouse drag
+  c.addEventListener('mousedown', e=>{
+    isDragging=true; rotVel={x:0,y:0};
+    prevMouse={x:e.clientX,y:e.clientY};
+  });
+  c.addEventListener('mousemove', e=>{
+    if(!isDragging) return;
+    const dx=e.clientX-prevMouse.x, dy=e.clientY-prevMouse.y;
+    globeGroup.rotation.y += dx*0.005;
+    globeGroup.rotation.x += dy*0.003;
+    globeGroup.rotation.x = Math.max(-Math.PI*0.5, Math.min(Math.PI*0.5, globeGroup.rotation.x));
+    rotVel={x:dy*0.003, y:dx*0.005};
+    prevMouse={x:e.clientX,y:e.clientY};
+  });
+  c.addEventListener('mouseup',  ()=>isDragging=false);
+  c.addEventListener('mouseleave',()=>isDragging=false);
+
+  // Scroll zoom
+  c.addEventListener('wheel', e=>{
+    e.preventDefault();
+    camDist = Math.max(260, Math.min(1100, camDist+e.deltaY*0.4));
+    camera.position.z = camDist;
+    updateLOD();
+  },{passive:false});
+
+  // Touch drag
+  let touchPrev={x:0,y:0};
+  let pinchStart=0;
+  c.addEventListener('touchstart', e=>{
+    if(e.touches.length===1){ isDragging=true; touchPrev={x:e.touches[0].clientX,y:e.touches[0].clientY}; }
+    else if(e.touches.length===2){
+      const dx=e.touches[0].clientX-e.touches[1].clientX;
+      const dy=e.touches[0].clientY-e.touches[1].clientY;
+      pinchStart=Math.sqrt(dx*dx+dy*dy);
+    }
+  });
+  c.addEventListener('touchmove', e=>{
+    e.preventDefault();
+    if(e.touches.length===1 && isDragging){
+      const dx=e.touches[0].clientX-touchPrev.x, dy=e.touches[0].clientY-touchPrev.y;
+      globeGroup.rotation.y += dx*0.005;
+      globeGroup.rotation.x += dy*0.003;
+      globeGroup.rotation.x = Math.max(-Math.PI*0.5,Math.min(Math.PI*0.5,globeGroup.rotation.x));
+      touchPrev={x:e.touches[0].clientX,y:e.touches[0].clientY};
+    } else if(e.touches.length===2){
+      const dx=e.touches[0].clientX-e.touches[1].clientX;
+      const dy=e.touches[0].clientY-e.touches[1].clientY;
+      const dist=Math.sqrt(dx*dx+dy*dy);
+      camDist = Math.max(260,Math.min(1100, camDist-(dist-pinchStart)*0.5));
+      camera.position.z=camDist;
+      pinchStart=dist;
+      updateLOD();
+    }
+  },{passive:false});
+  c.addEventListener('touchend',()=>isDragging=false);
+
+  window.addEventListener('resize',()=>{
+    camera.aspect=window.innerWidth/window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth,window.innerHeight);
+  });
+}
+
+// ── Clock ──────────────────────────────────────
+function updateClock(){
+  const d=new Date();
+  document.getElementById('clock').textContent =
+    d.getHours().toString().padStart(2,'0')+':'+
+    d.getMinutes().toString().padStart(2,'0')+':'+
+    d.getSeconds().toString().padStart(2,'0');
+}
+
+// ── FPS ────────────────────────────────────────
+function calcFPS(){
+  const now=performance.now();
+  frameTimes.push(now);
+  frameTimes=frameTimes.filter(t=>now-t<1000);
+  return frameTimes.length;
+}
+
+// ── Render loop ────────────────────────────────
+function animate(){
+  requestAnimationFrame(animate);
+
+  // Auto-rotate + momentum
+  if(!isDragging){
+    globeGroup.rotation.y += 0.0008;
+    rotVel.x*=0.93; rotVel.y*=0.93;
+    if(Math.abs(rotVel.y)>0.00005) globeGroup.rotation.y+=rotVel.y;
+    if(Math.abs(rotVel.x)>0.00005) globeGroup.rotation.x+=rotVel.x;
+    globeGroup.rotation.x=Math.max(-Math.PI*0.5,Math.min(Math.PI*0.5,globeGroup.rotation.x));
+  }
+
+  // Pulse location marker
+  if(locationObj){
+    const t=Date.now()*0.0025;
+    const s1=1+0.45*Math.sin(t);
+    const s2=1+0.3*Math.sin(t*0.7+1);
+    locationObj.ring1.scale.set(s1,s1,1);
+    locationObj.ring2.scale.set(s2,s2,1);
+    locationObj.ring1.material.opacity=0.5+0.35*Math.abs(Math.sin(t));
+    locationObj.ring2.material.opacity=0.2+0.2*Math.abs(Math.sin(t*0.7));
+  }
+
+  updateLabel();
+  updateClock();
+  document.getElementById('fpsVal').textContent=calcFPS();
+  renderer.render(scene,camera);
+}
+
+// ══════════════════════════════════════════════
+// MAIN INIT
+// ══════════════════════════════════════════════
+async function main(){
+  // Scene
+  scene = new THREE.Scene();
+  camera = new THREE.PerspectiveCamera(45, window.innerWidth/window.innerHeight, 1, 5000);
+  camera.position.z = camDist;
+
+  renderer = new THREE.WebGLRenderer({canvas:document.getElementById('c'), antialias:true, alpha:true});
+  renderer.setPixelRatio(window.devicePixelRatio);
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setClearColor(0x010409, 1);
+
+  globeGroup = new THREE.Group();
+  scene.add(globeGroup);
+
+  makeStars();
+  makeAtmosphere();
+  setupEvents();
+  animate();
+
+  setLoad(10,'Fetching world topology...');
+  let topo;
+  try{
+    topo = await fetch('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json').then(r=>r.json());
+  }catch(e){
+    setLoad(10,'CDN failed: '+e.message); return;
+  }
+
+  setLoad(30,'Drawing land mask...');
+  const land      = topojson.feature(topo, topo.objects.land);
+  const countries = topojson.feature(topo, topo.objects.countries);
+  const borders   = topojson.mesh(topo, topo.objects.countries);
+
+  document.getElementById('countryCount').textContent = countries.features.length;
+
+  // ── Land mask on offscreen canvas ──
+  const MW=2048, MH=1024;
+  const mc = document.createElement('canvas');
+  mc.width=MW; mc.height=MH;
+  const mctx = mc.getContext('2d');
+  mctx.fillStyle='#000'; mctx.fillRect(0,0,MW,MH);
+  mctx.fillStyle='#fff';
+
+  function drawGeomToMask(geom){
+    const {type,coordinates}=geom;
+    function drawRing(ring){
+      if(!ring||ring.length<3) return;
+      mctx.beginPath();
+      mctx.moveTo((ring[0][0]+180)/360*MW, (90-ring[0][1])/180*MH);
+      for(let i=1;i<ring.length;i++) mctx.lineTo((ring[i][0]+180)/360*MW,(90-ring[i][1])/180*MH);
+      mctx.closePath(); mctx.fill();
+    }
+    if(type==='Polygon') drawRing(coordinates[0]);
+    else if(type==='MultiPolygon') coordinates.forEach(p=>drawRing(p[0]));
+    else if(type==='GeometryCollection') geom.geometries.forEach(drawGeomToMask);
+  }
+
+  // Use merged land object for mask
+  if(land.type==='Feature') drawGeomToMask(land.geometry);
+  else if(land.type==='FeatureCollection') land.features.forEach(f=>drawGeomToMask(f.geometry));
+
+  const imgData = mctx.getImageData(0,0,MW,MH).data;
+  function isLand(lat,lng){
+    const x=Math.max(0,Math.min(MW-1,Math.floor(((lng+180)%360)/360*MW)));
+    const y=Math.max(0,Math.min(MH-1,Math.floor((90-lat)/180*MH)));
+    return imgData[(y*MW+x)*4]>128;
+  }
+
+  setLoad(50,'Generating dot field LODs...');
+  const tex = makeDotTex();
+
+  // Build 3 LOD levels
+  const lodConfigs = [{key:'low',res:3.0},{key:'med',res:2.0},{key:'high',res:1.2}];
+  for(const {key,res} of lodConfigs){
+    const {mesh,count} = buildDots(res, isLand, tex);
+    dotMeshes[key] = mesh;
+    mesh.visible = (key===currentLOD);
+    globeGroup.add(mesh);
+    if(key===currentLOD) document.getElementById('dotCount').textContent=count.toLocaleString();
+  }
+
+  setLoad(75,'Building country borders...');
+  buildBorders(borders);
+
+  setLoad(88,'Locating your position...');
+  // Fetch IP location
+  try{
+    const resp = await fetch('https://ipapi.co/json/');
+    const data = await resp.json();
+    const lat = data.latitude || data.lat || 0;
+    const lng = data.longitude || data.lon || 0;
+    const city    = data.city || 'Unknown';
+    const country = data.country_name || data.country || 'Unknown';
+    buildLocationMarker(lat, lng, city, country);
+    // Rotate globe to show user's location
+    globeGroup.rotation.y = -(lng + 180) * Math.PI / 180 + Math.PI;
+    globeGroup.rotation.x = -lat * Math.PI / 180 * 0.5;
+  }catch(e){
+    buildLocationMarker(20.59, 85.09, 'Jharkhand', 'India'); // fallback
+  }
+
+  setLoad(100,'Ready!');
+  await new Promise(r=>setTimeout(r,400));
+  document.getElementById('loadScreen').style.display='none';
+  document.getElementById('hud').style.display='block';
+  updateLOD();
+}
+
+main().catch(e=>{ document.getElementById('loadMsg').textContent='Error: '+e.message; });
+</script>
+</body>
+</html>
