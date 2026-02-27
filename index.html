@@ -61,7 +61,7 @@ body::after{
 
 /* Location panel - bottom left */
 #locPanel{
-  bottom:14px;left:14px;min-width:200px;
+  bottom:14px;left:14px;min-width:230px;
   clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,0 100%);
 }
 .loc-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:.35rem;font-size:.7rem}
@@ -176,7 +176,15 @@ body::after{
   <!-- Location -->
   <div class="panel" id="locPanel">
     <div class="panel-title">Your Location</div>
-    <div class="loc-row"><span class="loc-key">City</span><span class="loc-val" id="locCity">Locating...</span></div>
+    <div class="loc-row">
+      <span class="loc-key">IP</span>
+      <span class="loc-val" id="locIP" style="color:var(--accent);font-size:.65rem;letter-spacing:.05em">Scanning...</span>
+    </div>
+    <div class="loc-row"><span class="loc-key">ISP</span><span class="loc-val" id="locISP">--</span></div>
+    <div class="loc-row" style="border-top:1px solid var(--border);padding-top:.35rem;margin-top:.1rem">
+      <span class="loc-key">City</span><span class="loc-val" id="locCity">--</span>
+    </div>
+    <div class="loc-row"><span class="loc-key">Region</span><span class="loc-val" id="locRegion">--</span></div>
     <div class="loc-row"><span class="loc-key">Country</span><span class="loc-val" id="locCountry">--</span></div>
     <div class="loc-row"><span class="loc-key">Lat</span><span class="loc-val" id="locLat">--</span></div>
     <div class="loc-row"><span class="loc-key">Lng</span><span class="loc-val" id="locLng">--</span></div>
@@ -372,10 +380,10 @@ function buildLocationMarker(lat, lng, city, country){
   locationObj = { group, ring1, ring2, lat, lng, city, country };
 
   // Update side panels
-  document.getElementById('locCity').textContent = city || '--';
+  document.getElementById('locCity').textContent    = city    || '--';
   document.getElementById('locCountry').textContent = country || '--';
-  document.getElementById('locLat').textContent = lat.toFixed(3)+'°';
-  document.getElementById('locLng').textContent = lng.toFixed(3)+'°';
+  document.getElementById('locLat').textContent     = lat.toFixed(4)+'°';
+  document.getElementById('locLng').textContent     = lng.toFixed(4)+'°';
   document.getElementById('locLabelName').textContent = city || 'Your Location';
   document.getElementById('locLabelSub').textContent = `${lat.toFixed(2)}° · ${lng.toFixed(2)}°`;
 }
@@ -633,16 +641,36 @@ async function main(){
   try{
     const resp = await fetch('https://ipapi.co/json/');
     const data = await resp.json();
-    const lat = data.latitude || data.lat || 0;
-    const lng = data.longitude || data.lon || 0;
-    const city    = data.city || 'Unknown';
-    const country = data.country_name || data.country || 'Unknown';
+    if(data.error) throw new Error(data.reason || 'API error');
+    const lat     = parseFloat(data.latitude)  || 0;
+    const lng     = parseFloat(data.longitude) || 0;
+    const ip      = data.ip              || 'Unknown';
+    const isp     = data.org             || data.isp || 'Unknown';
+    const city    = data.city            || 'Unknown';
+    const region  = data.region          || '';
+    const country = data.country_name    || data.country || 'Unknown';
+
+    // Show IP & ISP in panel
+    document.getElementById('locIP').textContent     = ip;
+    document.getElementById('locISP').textContent    = isp.length>22 ? isp.slice(0,22)+'…' : isp;
+    document.getElementById('locRegion').textContent = region || '--';
+
     buildLocationMarker(lat, lng, city, country);
-    // Rotate globe to show user's location
+
+    // Also update floating label with IP
+    document.getElementById('locLabelSub').textContent =
+      ip + '  ·  ' + lat.toFixed(2)+'° '+lng.toFixed(2)+'°';
+
+    // Rotate globe to face user's location
     globeGroup.rotation.y = -(lng + 180) * Math.PI / 180 + Math.PI;
     globeGroup.rotation.x = -lat * Math.PI / 180 * 0.5;
   }catch(e){
-    buildLocationMarker(20.59, 85.09, 'Jharkhand', 'India'); // fallback
+    console.warn('IP lookup failed:', e.message);
+    // Fallback — still show something useful
+    document.getElementById('locIP').textContent  = 'Unavailable';
+    document.getElementById('locISP').textContent = 'Check network';
+    document.getElementById('locRegion').textContent = '--';
+    buildLocationMarker(20.59, 85.09, 'Jharkhand, India', 'India');
   }
 
   setLoad(100,'Ready!');
