@@ -192,6 +192,9 @@ body::after{
   </div>
 </div>
 
+<!-- Error toast container -->
+<div id="errorToast"></div>
+
 <!-- Floating 3D label -->
 <div id="locationLabel">
   <div class="loc-label-box">
@@ -553,6 +556,44 @@ function animate(){
 // ══════════════════════════════════════════════
 // MAIN INIT
 // ══════════════════════════════════════════════
+// ══════════════════════════════════════════════
+// ON-SCREEN ERROR / INFO TOAST SYSTEM
+// ══════════════════════════════════════════════
+let toastTimers = [];
+
+function showToast(type, tag, msg, autoDismissMs=0){
+  const container = document.getElementById('errorToast');
+  if(!container) return;
+  const card = document.createElement('div');
+  card.className = 'err-card'+(type==='warn'?' warn':type==='info'?' info':'');
+  const time = new Date().toLocaleTimeString();
+  card.innerHTML =
+    '<div class="err-header">'+
+      '<span class="err-tag">'+tag+'</span>'+
+      '<span class="err-src">'+time+'</span>'+
+    '</div>'+
+    '<div class="err-msg">'+msg+'</div>';
+  container.appendChild(card);
+  if(autoDismissMs>0){
+    const t=setTimeout(()=>{
+      card.style.opacity='0';card.style.transition='opacity .4s';
+      setTimeout(()=>card.remove(),400);
+    },autoDismissMs);
+    toastTimers.push(t);
+  }
+  return card;
+}
+
+function clearToasts(){
+  toastTimers.forEach(clearTimeout); toastTimers=[];
+  const c=document.getElementById('errorToast');
+  if(!c) return;
+  [...c.children].forEach(el=>{
+    el.style.opacity='0';el.style.transition='opacity .3s';
+    setTimeout(()=>el.remove(),300);
+  });
+}
+
 async function main(){
   // Scene
   scene = new THREE.Scene();
@@ -639,37 +680,98 @@ async function main(){
   setLoad(88,'Locating your position...');
   // Fetch IP location
   try{
-    const resp = await fetch('https://ipapi.co/json/');
-    const data = await resp.json();
-    if(data.error) throw new Error(data.reason || 'API error');
-    const lat     = parseFloat(data.latitude)  || 0;
-    const lng     = parseFloat(data.longitude) || 0;
-    const ip      = data.ip              || 'Unknown';
-    const isp     = data.org             || data.isp || 'Unknown';
-    const city    = data.city            || 'Unknown';
-    const region  = data.region          || '';
-    const country = data.country_name    || data.country || 'Unknown';
+    // Try multiple IP APIs in sequence — first success wins
+    const IP_APIS = [
+      {
+        url:'https://ipwho.is/',
+        parse: d => ({
+          ip:d.ip, isp:d.connection?.isp||d.org||'',
+          city:d.city, region:d.region, country:d.country,
+          lat:parseFloat(d.latitude), lng:parseFloat(d.longitude),
+          ok: !d.message && d.success!==false
+        })
+      },
+      {
+        url:'https://ip-api.com/json/?fields=status,message,country,regionName,city,lat,lon,isp,org,query',
+        parse: d => ({
+          ip:d.query, isp:d.org||d.isp||'',
+          city:d.city, region:d.regionName, country:d.country,
+          lat:parseFloat(d.lat), lng:parseFloat(d.lon),
+          ok: d.status==='success'
+        })
+      },
+      {
+        url:'https://ipapi.co/json/',
+        parse: d => ({
+          ip:d.ip, isp:d.org||d.isp||'',
+          city:d.city, region:d.region, country:d.country_name||d.country,
+          lat:parseFloat(d.latitude), lng:parseFloat(d.longitude),
+          ok: !d.error
+        })
+      },
+      {
+        url:'https://freeipapi.com/api/json',
+        parse: d => ({
+          ip:d.ipAddress, isp:d.isp||'',
+          city:d.cityName, region:d.regionName, country:d.countryName,
+          lat:parseFloat(d.latitude), lng:parseFloat(d.longitude),
+          ok: !!d.ipAddress
+        })
+      },
+    ];
 
-    // Show IP & ISP in panel
-    document.getElementById('locIP').textContent     = ip;
-    document.getElementById('locISP').textContent    = isp.length>22 ? isp.slice(0,22)+'…' : isp;
-    document.getElementById('locRegion').textContent = region || '--';
+    let locationData = null;
+    const errs = [];
 
-    buildLocationMarker(lat, lng, city, country);
+    for(const api of IP_APIS){
+      try{
+        const hostname = new URL(api.url).hostname;
+        showToast('info','TRYING '+hostname,'Attempting IP geolocation...', 2000);
+        const r = await Promise.race([
+          fetch(api.url),
+          new Promise((_,rej)=>setTimeout(()=>rej(new Error('Timeout 5s')),5000))
+        ]);
+        if(!r.ok) throw new Error('HTTP '+r.status+' '+r.statusText);
+        const raw = await r.json();
+        const d   = api.parse(raw);
+        if(!d.ok) throw new Error('API returned failure status');
+        if(!d.lat||!d.lng) throw new Error('No coordinates in response');
+        locationData = d;
+        clearToasts();
+        break;
+      }catch(err){
+        const host = new URL(api.url).hostname;
+        const msg  = err.message||String(err);
+        errs.push({src:host, msg});
+        showToast('warn','FAIL: '+host, msg, 3000);
+        await new Promise(r=>setTimeout(r,300));
+      }
+    }
 
-    // Also update floating label with IP
-    document.getElementById('locLabelSub').textContent =
-      ip + '  ·  ' + lat.toFixed(2)+'° '+lng.toFixed(2)+'°';
-
-    // Rotate globe to face user's location
-    globeGroup.rotation.y = -(lng + 180) * Math.PI / 180 + Math.PI;
-    globeGroup.rotation.x = -lat * Math.PI / 180 * 0.5;
+    if(locationData){
+      const {ip,isp,city,region,country,lat,lng} = locationData;
+      document.getElementById('locIP').textContent     = ip      || '--';
+      document.getElementById('locISP').textContent    = (isp||'').length>24 ? isp.slice(0,24)+'…' : (isp||'--');
+      document.getElementById('locRegion').textContent = region  || '--';
+      buildLocationMarker(lat, lng, city||'Unknown', country||'Unknown');
+      document.getElementById('locLabelSub').textContent =
+        ip+'· '+lat.toFixed(2)+'° '+lng.toFixed(2)+'°';
+      globeGroup.rotation.y = -(lng+180)*Math.PI/180+Math.PI;
+      globeGroup.rotation.x = -lat*Math.PI/180*0.5;
+      clearToasts();
+      showToast('info','LOCK ACQUIRED', ip+' · '+city+', '+country, 4000);
+    } else {
+      document.getElementById('locIP').textContent     = 'All APIs failed';
+      document.getElementById('locISP').textContent    = '--';
+      document.getElementById('locRegion').textContent = '--';
+      clearToasts();
+      for(const e of errs) showToast('err','FAIL: '+e.src, e.msg);
+      showToast('warn','FALLBACK LOCATION','Could not geolocate — showing default');
+      buildLocationMarker(20.59, 85.09, 'Jharkhand, India', 'India');
+    }
   }catch(e){
-    console.warn('IP lookup failed:', e.message);
-    // Fallback — still show something useful
-    document.getElementById('locIP').textContent  = 'Unavailable';
-    document.getElementById('locISP').textContent = 'Check network';
-    document.getElementById('locRegion').textContent = '--';
+    showToast('err','FATAL ERROR', e.message||String(e));
+    document.getElementById('locIP').textContent = 'Error';
     buildLocationMarker(20.59, 85.09, 'Jharkhand, India', 'India');
   }
 
