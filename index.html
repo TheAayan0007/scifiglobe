@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
@@ -26,80 +25,78 @@ body::after{
 
 /* ── LOAD SCREEN ── */
 #loadScreen{
-position:fixed;inset:0;z-index:500;
-background:var(–bg);
-display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.2rem;
+  position:fixed;inset:0;z-index:500;
+  background:var(--bg);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.2rem;
 }
-.load-title{font-family:‘Orbitron’,monospace;font-size:.65rem;letter-spacing:.5em;color:var(–accent)}
-.load-pct{font-family:‘Orbitron’,monospace;font-size:2.2rem;font-weight:900;color:var(–accent)}
+.load-title{font-family:'Orbitron',monospace;font-size:.65rem;letter-spacing:.5em;color:var(--accent)}
+.load-pct{font-family:'Orbitron',monospace;font-size:2.2rem;font-weight:900;color:var(--accent)}
 .load-bar-outer{width:320px;height:3px;background:rgba(0,255,231,.08)}
-.load-bar-inner{height:100%;width:0%;background:var(–accent);transition:width .4s ease;box-shadow:0 0 16px var(–accent)}
-.load-msg{font-size:.7rem;letter-spacing:.2em;color:var(–dim);text-transform:uppercase;font-family:‘Rajdhani’,sans-serif}
+.load-bar-inner{height:100%;width:0%;background:var(--accent);transition:width .4s ease;box-shadow:0 0 16px var(--accent)}
+.load-msg{font-size:.7rem;letter-spacing:.2em;color:var(--dim);text-transform:uppercase;font-family:'Rajdhani',sans-serif}
 
 /* ── HUD ── */
 #hud{position:fixed;inset:0;pointer-events:none;z-index:20;display:none;}
 
 .hdr{
-position:absolute;top:0;left:0;right:0;
-padding:.8rem 1.4rem;
-display:flex;align-items:center;justify-content:space-between;
-background:linear-gradient(180deg,rgba(1,4,9,.95) 0%,transparent 100%);
-border-bottom:1px solid rgba(0,255,231,.06);
+  position:absolute;top:0;left:0;right:0;
+  padding:.8rem 1.4rem;
+  display:flex;align-items:center;justify-content:space-between;
+  background:linear-gradient(180deg,rgba(1,4,9,.95) 0%,transparent 100%);
+  border-bottom:1px solid rgba(0,255,231,.06);
 }
-.hdr-name{font-family:‘Orbitron’,monospace;font-size:1rem;font-weight:900;color:#fff;letter-spacing:.1em;}
-.hdr-name span{color:var(–accent)}
-.hdr-ver{font-family:‘Orbitron’,monospace;font-size:.48rem;letter-spacing:.4em;color:var(–accent3);margin-top:.1rem}
-.hdr-center{display:flex;align-items:center;gap:.5rem;font-family:‘Orbitron’,monospace;font-size:.6rem;letter-spacing:.2em;color:var(–accent)}
-.live-dot{width:7px;height:7px;border-radius:50%;background:var(–accent);box-shadow:0 0 8px var(–accent);animation:blink 1.4s ease-in-out infinite}
+.hdr-name{font-family:'Orbitron',monospace;font-size:1rem;font-weight:900;color:#fff;letter-spacing:.1em;}
+.hdr-name span{color:var(--accent)}
+.hdr-ver{font-family:'Orbitron',monospace;font-size:.48rem;letter-spacing:.4em;color:var(--accent3);margin-top:.1rem}
+.hdr-center{display:flex;align-items:center;gap:.5rem;font-family:'Orbitron',monospace;font-size:.6rem;letter-spacing:.2em;color:var(--accent)}
+.live-dot{width:7px;height:7px;border-radius:50%;background:var(--accent);box-shadow:0 0 8px var(--accent);animation:blink 1.4s ease-in-out infinite}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
-.hdr-time{font-family:‘Orbitron’,monospace;font-size:.6rem;color:var(–dim);letter-spacing:.15em}
+.hdr-time{font-family:'Orbitron',monospace;font-size:.6rem;color:var(--dim);letter-spacing:.15em}
 
 .panel{
-position:absolute;z-index:20;background:var(–panel);border:1px solid var(–border);
-padding:.8rem 1rem;backdrop-filter:blur(8px);
+  position:absolute;z-index:20;background:var(--panel);border:1px solid var(--border);
+  padding:.8rem 1rem;backdrop-filter:blur(8px);
 }
-.panel-title{font-family:‘Orbitron’,monospace;font-size:.45rem;letter-spacing:.35em;color:var(–dim);text-transform:uppercase;margin-bottom:.7rem;padding-bottom:.4rem;border-bottom:1px solid var(–border)}
+.panel-title{font-family:'Orbitron',monospace;font-size:.45rem;letter-spacing:.35em;color:var(--dim);text-transform:uppercase;margin-bottom:.7rem;padding-bottom:.4rem;border-bottom:1px solid var(--border)}
 
 /* Location panel - bottom left */
 #locPanel{
-bottom:14px;left:14px;min-width:230px;
-clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,0 100%);
+  bottom:14px;left:14px;min-width:230px;
+  clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,0 100%);
 }
 .loc-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:.35rem;font-size:.7rem}
 .loc-row:last-child{margin-bottom:0}
-.loc-key{color:var(–dim);letter-spacing:.05em;font-family:‘Rajdhani’,sans-serif}
-.loc-val{font-family:‘Orbitron’,monospace;font-size:.6rem;font-weight:700;color:var(–accent3);text-align:right;max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.loc-status{display:flex;align-items:center;gap:.4rem;margin-top:.6rem;padding-top:.5rem;border-top:1px solid var(–border);font-family:‘Orbitron’,monospace;font-size:.5rem;color:var(–accent);letter-spacing:.2em}
-.loc-status-dot{width:5px;height:5px;border-radius:50%;background:var(–accent);animation:blink 1s infinite}
-.loc-source-tag{font-family:‘Orbitron’,monospace;font-size:.42rem;letter-spacing:.15em;padding:.12rem .3rem;border-radius:2px;margin-left:auto;}
-.loc-source-tag.gps{background:rgba(0,255,231,.12);color:var(–accent);border:1px solid rgba(0,255,231,.3);}
-.loc-source-tag.ip{background:rgba(255,195,0,.1);color:var(–accent3);border:1px solid rgba(255,195,0,.3);}
+.loc-key{color:var(--dim);letter-spacing:.05em;font-family:'Rajdhani',sans-serif}
+.loc-val{font-family:'Orbitron',monospace;font-size:.6rem;font-weight:700;color:var(--accent3);text-align:right;max-width:130px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.loc-status{display:flex;align-items:center;gap:.4rem;margin-top:.6rem;padding-top:.5rem;border-top:1px solid var(--border);font-family:'Orbitron',monospace;font-size:.5rem;color:var(--accent);letter-spacing:.2em}
+.loc-status-dot{width:5px;height:5px;border-radius:50%;background:var(--accent);animation:blink 1s infinite}
 
-/* Stats panel - bottom right */
+/* Stats panel - bottom right (shift up when permission btn visible) */
 #statsPanel{
-bottom:14px;right:14px;min-width:150px;
-clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,0 100%);
+  bottom:14px;right:14px;min-width:150px;
+  clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,0 100%);
+  transition:bottom .3s ease;
 }
 .stat-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:.35rem;font-size:.7rem}
 .stat-row:last-child{margin-bottom:0}
-.stat-label{color:var(–dim);letter-spacing:.05em;font-family:‘Rajdhani’,sans-serif}
-.stat-val{font-family:‘Orbitron’,monospace;font-size:.6rem;font-weight:700;color:var(–accent)}
+.stat-label{color:var(--dim);letter-spacing:.05em;font-family:'Rajdhani',sans-serif}
+.stat-val{font-family:'Orbitron',monospace;font-size:.6rem;font-weight:700;color:var(--accent)}
 
 /* Controls panel - top right */
 #ctrlPanel{top:62px;right:14px;clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,0 100%)}
-.ctrl-row{display:flex;align-items:center;gap:.5rem;margin-bottom:.3rem;font-size:.65rem;color:var(–dim)}
+.ctrl-row{display:flex;align-items:center;gap:.5rem;margin-bottom:.3rem;font-size:.65rem;color:var(--dim)}
 .ctrl-row:last-child{margin-bottom:0}
-.ctrl-key{font-family:‘Orbitron’,monospace;font-size:.45rem;color:var(–accent);border:1px solid var(–dim);padding:.1rem .35rem;letter-spacing:.1em}
+.ctrl-key{font-family:'Orbitron',monospace;font-size:.45rem;color:var(--accent);border:1px solid var(--dim);padding:.1rem .35rem;letter-spacing:.1em}
 
 /* LOD panel - top left */
 #lodPanel{top:62px;left:14px;clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,0 100%)}
-.lod-bar-outer{width:100%;height:2px;background:var(–border);margin-top:.3rem;border-radius:1px}
-.lod-bar-inner{height:100%;background:var(–accent);transition:width .4s ease;border-radius:1px;box-shadow:0 0 6px var(–accent)}
-#lodLabel{font-family:‘Orbitron’,monospace;font-size:.55rem;color:var(–accent);letter-spacing:.2em}
-#zoomVal{font-family:‘Orbitron’,monospace;font-size:1.4rem;font-weight:900;color:var(–accent);line-height:1}
+.lod-bar-outer{width:100%;height:2px;background:var(--border);margin-top:.3rem;border-radius:1px}
+.lod-bar-inner{height:100%;background:var(--accent);transition:width .4s ease;border-radius:1px;box-shadow:0 0 6px var(--accent)}
+#lodLabel{font-family:'Orbitron',monospace;font-size:.55rem;color:var(--accent);letter-spacing:.2em}
+#zoomVal{font-family:'Orbitron',monospace;font-size:1.4rem;font-weight:900;color:var(--accent);line-height:1}
 
 /* Corner brackets */
-.bracket{position:absolute;z-index:15;width:28px;height:28px;border-color:var(–accent);border-style:solid;opacity:.3}
+.bracket{position:absolute;z-index:15;width:28px;height:28px;border-color:var(--accent);border-style:solid;opacity:.3}
 .bracket.tl{top:54px;left:12px;border-width:2px 0 0 2px}
 .bracket.tr{top:54px;right:12px;border-width:2px 2px 0 0}
 .bracket.bl{bottom:12px;left:12px;border-width:0 0 2px 2px}
@@ -107,112 +104,91 @@ clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,0 100%);
 
 /* Floating location label */
 #locationLabel{
-position:fixed;pointer-events:none;z-index:30;
-transform:translate(-50%,-100%);
-opacity:0;transition:opacity .3s;
+  position:fixed;pointer-events:none;z-index:30;
+  transform:translate(-50%,-100%);
+  opacity:0;transition:opacity .3s;
 }
 .loc-label-box{
-background:rgba(5,12,28,.9);border:1px solid var(–accent3);
-padding:.4rem .7rem;
-clip-path:polygon(0 0,calc(100% - 8px) 0,100% 8px,100% 100%,0 100%);
-white-space:nowrap;
+  background:rgba(5,12,28,.9);border:1px solid var(--accent3);
+  padding:.4rem .7rem;
+  clip-path:polygon(0 0,calc(100% - 8px) 0,100% 8px,100% 100%,0 100%);
+  white-space:nowrap;
 }
-.loc-label-name{font-family:‘Orbitron’,monospace;font-size:.6rem;font-weight:700;color:var(–accent3);letter-spacing:.1em}
-.loc-label-sub{font-size:.55rem;color:var(–dim);letter-spacing:.05em;margin-top:.2rem}
+.loc-label-name{font-family:'Orbitron',monospace;font-size:.6rem;font-weight:700;color:var(--accent3);letter-spacing:.1em}
+.loc-label-sub{font-size:.55rem;color:var(--dim);letter-spacing:.05em;margin-top:.2rem}
 .loc-label-line{
-width:1px;height:20px;background:linear-gradient(180deg,var(–accent3),transparent);
-margin:0 auto;
+  width:1px;height:20px;background:linear-gradient(180deg,var(--accent3),transparent);
+  margin:0 auto;
 }
 
-/* ── GPS PERMISSION BUTTON ── */
-#gpsBtn{
-position:fixed;
-bottom:50%;
-left:50%;
-transform:translate(-50%,50%);
-z-index:100;
-pointer-events:all;
-display:none;
-flex-direction:column;
-align-items:center;
-gap:.7rem;
-background:var(–panel);
-border:1px solid var(–accent);
-padding:1.2rem 1.6rem 1.1rem;
-clip-path:polygon(0 0,calc(100% - 14px) 0,100% 14px,100% 100%,0 100%);
-backdrop-filter:blur(12px);
-box-shadow:0 0 40px rgba(0,255,231,.08), 0 0 0 1px rgba(0,255,231,.06) inset;
-cursor:pointer;
-transition:opacity .4s, transform .4s;
-}
-#gpsBtn:hover{background:rgba(0,255,231,.06);}
-#gpsBtn .btn-icon{font-size:1.6rem;line-height:1;animation:pulse-icon 2s ease-in-out infinite;}
-@keyframes pulse-icon{0%,100%{transform:scale(1);filter:drop-shadow(0 0 4px var(–accent))}50%{transform:scale(1.12);filter:drop-shadow(0 0 12px var(–accent))}}
-#gpsBtn .btn-title{font-family:‘Orbitron’,monospace;font-size:.62rem;font-weight:700;color:var(–accent);letter-spacing:.3em;text-transform:uppercase;}
-#gpsBtn .btn-sub{font-size:.6rem;color:var(–dim);letter-spacing:.1em;text-align:center;line-height:1.4;}
-#gpsBtn .btn-cta{
-margin-top:.3rem;
-font-family:‘Orbitron’,monospace;font-size:.55rem;letter-spacing:.25em;
-color:var(–bg);background:var(–accent);
-padding:.35rem .9rem;
-clip-path:polygon(0 0,calc(100% - 6px) 0,100% 6px,100% 100%,0 100%);
-}
-#gpsBtn .btn-skip{font-size:.52rem;color:var(–dim);letter-spacing:.1em;text-decoration:underline;cursor:pointer;margin-top:-.2rem;}
-
-/* Floating mini GPS nudge button (bottom center, after HUD shows) */
-#gpsMiniBtn{
-position:fixed;
-bottom:14px;
-left:50%;
-transform:translateX(-50%);
-z-index:100;
-pointer-events:all;
-display:none;
-align-items:center;
-gap:.5rem;
-background:var(–panel);
-border:1px solid var(–accent3);
-padding:.5rem 1rem;
-clip-path:polygon(0 0,calc(100% - 8px) 0,100% 8px,100% 100%,0 100%);
-backdrop-filter:blur(10px);
-cursor:pointer;
-font-family:‘Orbitron’,monospace;
-font-size:.5rem;
-color:var(–accent3);
-letter-spacing:.2em;
-transition:opacity .4s;
-animation:nudge-glow 2.5s ease-in-out infinite;
-}
-@keyframes nudge-glow{0%,100%{box-shadow:0 0 8px rgba(255,195,0,.15)}50%{box-shadow:0 0 18px rgba(255,195,0,.35)}}
-#gpsMiniBtn .mini-dot{width:6px;height:6px;border-radius:50%;background:var(–accent3);animation:blink 1.2s ease-in-out infinite;flex-shrink:0;}
-#gpsMiniBtn:hover{background:rgba(255,195,0,.08);}
-
-/* Toast system */
+/* ── TOAST NOTIFICATIONS ── */
 #errorToast{
-position:fixed;bottom:80px;right:16px;z-index:200;
-display:flex;flex-direction:column-reverse;gap:.4rem;pointer-events:none;
+  position:fixed;bottom:70px;right:14px;z-index:100;
+  display:flex;flex-direction:column;gap:.4rem;
+  max-width:320px;pointer-events:none;
 }
 .err-card{
-background:rgba(5,12,28,.95);border:1px solid var(–accent2);
-padding:.5rem .75rem;min-width:200px;max-width:280px;
-clip-path:polygon(0 0,calc(100% - 8px) 0,100% 8px,100% 100%,0 100%);
-font-size:.6rem;
+  background:rgba(5,10,24,.95);border:1px solid var(--accent2);
+  padding:.5rem .75rem;
+  clip-path:polygon(0 0,calc(100% - 8px) 0,100% 8px,100% 100%,0 100%);
+  animation:slideIn .25s ease;
 }
-.err-card.warn{border-color:var(–accent3)}
-.err-card.info{border-color:var(–accent)}
-.err-header{display:flex;justify-content:space-between;margin-bottom:.2rem}
-.err-tag{font-family:‘Orbitron’,monospace;font-size:.45rem;letter-spacing:.15em;color:var(–accent2)}
-.err-card.warn .err-tag{color:var(–accent3)}
-.err-card.info .err-tag{color:var(–accent)}
-.err-src{font-family:‘Orbitron’,monospace;font-size:.42rem;color:var(–dim)}
-.err-msg{color:var(–text);line-height:1.4}
-</style>
+.err-card.warn{border-color:var(--accent3);}
+.err-card.info{border-color:var(--accent);}
+.err-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:.25rem}
+.err-tag{font-family:'Orbitron',monospace;font-size:.45rem;font-weight:700;letter-spacing:.15em;color:var(--accent2)}
+.err-card.warn .err-tag{color:var(--accent3)}
+.err-card.info .err-tag{color:var(--accent)}
+.err-src{font-family:'Orbitron',monospace;font-size:.4rem;color:var(--dim);letter-spacing:.1em}
+.err-msg{font-size:.6rem;color:var(--text);line-height:1.4;letter-spacing:.02em}
+@keyframes slideIn{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:translateX(0)}}
 
+/* ── GRANT LOCATION BUTTON ── */
+#grantLocBtn{
+  position:fixed;bottom:14px;left:50%;transform:translateX(-50%);
+  z-index:100;pointer-events:all;
+  display:flex;align-items:center;gap:.6rem;
+  background:rgba(5,12,28,.95);
+  border:1px solid var(--accent3);
+  padding:.55rem 1.2rem;
+  clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,10px 100%,0 calc(100% - 10px));
+  cursor:pointer;
+  font-family:'Orbitron',monospace;font-size:.6rem;font-weight:700;
+  letter-spacing:.2em;color:var(--accent3);
+  text-transform:uppercase;
+  box-shadow:0 0 20px rgba(255,195,0,.15);
+  transition:all .25s ease;
+}
+#grantLocBtn:hover{
+  background:rgba(255,195,0,.08);
+  box-shadow:0 0 28px rgba(255,195,0,.3);
+  border-color:#ffe066;color:#ffe066;
+}
+#grantLocBtn .btn-icon{
+  width:8px;height:8px;border-radius:50%;
+  background:var(--accent3);
+  box-shadow:0 0 8px var(--accent3);
+  animation:blink 1.2s infinite;
+}
+#grantLocBtn.hidden{
+  opacity:0;pointer-events:none;transform:translateX(-50%) translateY(20px);
+  transition:opacity .4s ease,transform .4s ease;
+}
+
+/* Source badge in loc panel */
+#locSource{
+  font-family:'Orbitron',monospace;font-size:.42rem;letter-spacing:.15em;
+  padding:.1rem .35rem;border-radius:2px;
+  background:rgba(0,255,231,.07);border:1px solid var(--dim);
+  color:var(--dim);
+}
+#locSource.gps{color:var(--accent);border-color:var(--accent);background:rgba(0,255,231,.1)}
+#locSource.ip{color:var(--accent3);border-color:var(--accent3);background:rgba(255,195,0,.08)}
+</style>
 </head>
 <body>
 
 <!-- LOAD SCREEN -->
-
 <div id="loadScreen">
   <div class="load-title">Aayan Systems — Globe v1.0</div>
   <div class="load-pct" id="loadPct">0%</div>
@@ -221,28 +197,9 @@ font-size:.6rem;
 </div>
 
 <!-- THREE.JS CANVAS -->
-
 <canvas id="c"></canvas>
 
-<!-- GPS PERMISSION MODAL (shown during load if needed) -->
-
-<div id="gpsBtn">
-  <div class="btn-icon">📡</div>
-  <div class="btn-title">Location Access</div>
-  <div class="btn-sub">Grant GPS permission for<br>precise positioning on the globe.</div>
-  <div class="btn-cta" id="gpsBtnGrant">GRANT PERMISSION</div>
-  <div class="btn-skip" id="gpsBtnSkip">Skip — use IP location instead</div>
-</div>
-
-<!-- FLOATING MINI NUDGE BUTTON (bottom-center, visible if GPS was denied) -->
-
-<div id="gpsMiniBtn" id="gpsMiniBtn">
-  <div class="mini-dot"></div>
-  GRANT GPS PERMISSION
-</div>
-
 <!-- HUD OVERLAY -->
-
 <div id="hud">
   <div class="hdr">
     <div>
@@ -257,7 +214,6 @@ font-size:.6rem;
   <div class="bracket bl"></div><div class="bracket br"></div>
 
   <!-- LOD panel -->
-
   <div class="panel" id="lodPanel">
     <div class="panel-title">Render Density</div>
     <div id="zoomVal">--</div>
@@ -266,7 +222,6 @@ font-size:.6rem;
   </div>
 
   <!-- Controls -->
-
   <div class="panel" id="ctrlPanel">
     <div class="panel-title">Controls</div>
     <div class="ctrl-row"><span class="ctrl-key">DRAG</span>Rotate globe</div>
@@ -275,7 +230,6 @@ font-size:.6rem;
   </div>
 
   <!-- Globe stats -->
-
   <div class="panel" id="statsPanel">
     <div class="panel-title">Globe Stats</div>
     <div class="stat-row"><span class="stat-label">Dots</span><span class="stat-val" id="dotCount">--</span></div>
@@ -285,12 +239,10 @@ font-size:.6rem;
   </div>
 
   <!-- Location -->
-
   <div class="panel" id="locPanel">
-    <div class="panel-title">Your Location</div>
-    <div class="loc-row">
-      <span class="loc-key">Source</span>
-      <span class="loc-source-tag" id="locSourceTag">--</span>
+    <div class="panel-title" style="display:flex;justify-content:space-between;align-items:center">
+      <span>Your Location</span>
+      <span id="locSource">IP</span>
     </div>
     <div class="loc-row">
       <span class="loc-key">IP</span>
@@ -304,16 +256,14 @@ font-size:.6rem;
     <div class="loc-row"><span class="loc-key">Country</span><span class="loc-val" id="locCountry">--</span></div>
     <div class="loc-row"><span class="loc-key">Lat</span><span class="loc-val" id="locLat">--</span></div>
     <div class="loc-row"><span class="loc-key">Lng</span><span class="loc-val" id="locLng">--</span></div>
-    <div class="loc-status"><div class="loc-status-dot"></div>SIGNAL LOCKED</div>
+    <div class="loc-status"><div class="loc-status-dot"></div><span id="locStatusText">SIGNAL LOCKED</span></div>
   </div>
 </div>
 
-<!-- Error toast container -->
-
+<!-- Toast container -->
 <div id="errorToast"></div>
 
 <!-- Floating 3D label -->
-
 <div id="locationLabel">
   <div class="loc-label-box">
     <div class="loc-label-name" id="locLabelName">--</div>
@@ -322,24 +272,30 @@ font-size:.6rem;
   <div class="loc-label-line"></div>
 </div>
 
+<!-- Grant Location Permission Button (bottom center) -->
+<button id="grantLocBtn" class="hidden" title="Click to share your precise GPS location">
+  <div class="btn-icon"></div>
+  Grant Location Permission
+</button>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-
 <script src="https://cdn.jsdelivr.net/npm/topojson-client@3/dist/topojson-client.min.js"></script>
-
 <script>
 // ═══════════════════════════════════════════════
-// AAYAN GLOBE v1.0 — GPS + IP Location
+// AAYAN GLOBE v1.0
 // ═══════════════════════════════════════════════
 
-const R   = 200;
+const R   = 200;   // globe radius
 let scene, camera, renderer, globeGroup;
-let dotMeshes = {};
+let dotMeshes = {};          // {low, med, high}
 let currentLOD = 'med';
 let borderLines, locationObj;
 let isDragging = false, prevMouse = {x:0,y:0};
 let rotVel = {x:0, y:0};
 let camDist = 580;
 let frameTimes = [];
+let userLat = null, userLng = null;
+let geoPermissionState = 'prompt'; // 'prompt' | 'granted' | 'denied'
 
 // ── Load helpers ──────────────────────────────
 function setLoad(pct, msg){
@@ -412,6 +368,7 @@ function buildDots(resolution, isLand, tex){
   const waterC = new THREE.Color(0x0033bb);
   const pos=[], col=[];
   let count = 0;
+
   for(let lat=-90;lat<=90;lat+=resolution){
     for(let lng=-180;lng<180;lng+=resolution){
       const land = isLand(lat,lng);
@@ -422,14 +379,22 @@ function buildDots(resolution, isLand, tex){
       count++;
     }
   }
+
   const geo = new THREE.BufferGeometry();
   geo.setAttribute('position', new THREE.BufferAttribute(new Float32Array(pos),3));
   geo.setAttribute('color',    new THREE.BufferAttribute(new Float32Array(col),3));
+
   const dotSize = {3.0:4.5, 2.0:3.2, 1.2:2.0}[resolution] || 3.2;
+
   const mat = new THREE.PointsMaterial({
-    size: dotSize, map: tex, vertexColors: true,
-    transparent: true, opacity: 0.95,
-    blending: THREE.AdditiveBlending, depthWrite: false, sizeAttenuation: true,
+    size: dotSize,
+    map: tex,
+    vertexColors: true,
+    transparent: true,
+    opacity: 0.95,
+    blending: THREE.AdditiveBlending,
+    depthWrite: false,
+    sizeAttenuation: true,
   });
   return { mesh: new THREE.Points(geo, mat), count };
 }
@@ -459,34 +424,47 @@ function buildBorders(mesh){
 }
 
 // ── Location marker ───────────────────────────
-function buildLocationMarker(lat, lng, city, country){
+function buildLocationMarker(lat, lng, city, country, source){
   // Remove old marker if exists
-  if(locationObj){ globeGroup.remove(locationObj.group); }
+  if(locationObj){
+    globeGroup.remove(locationObj.group);
+    locationObj = null;
+  }
 
+  const markerColor = source === 'gps' ? 0x00ffe7 : 0xffc300;
   const pos = ll2xyz(lat, lng, R+2);
   const group = new THREE.Group();
+
+  // Core dot
   const core = new THREE.Mesh(
     new THREE.SphereGeometry(3.5,16,16),
-    new THREE.MeshBasicMaterial({color:0xffc300})
+    new THREE.MeshBasicMaterial({color:markerColor})
   );
   group.add(core);
+
+  // Inner ring
   const ring1 = new THREE.Mesh(
     new THREE.RingGeometry(5.5,7,48),
-    new THREE.MeshBasicMaterial({color:0xffc300,transparent:true,opacity:0.8,side:THREE.DoubleSide})
+    new THREE.MeshBasicMaterial({color:markerColor,transparent:true,opacity:0.8,side:THREE.DoubleSide})
   );
   const ring2 = new THREE.Mesh(
     new THREE.RingGeometry(10,11.5,48),
-    new THREE.MeshBasicMaterial({color:0xffc300,transparent:true,opacity:0.4,side:THREE.DoubleSide})
+    new THREE.MeshBasicMaterial({color:markerColor,transparent:true,opacity:0.4,side:THREE.DoubleSide})
   );
   group.add(ring1); group.add(ring2);
+
+  // Orient rings tangent to globe surface
   const normal = pos.clone().normalize();
   const q = new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0,0,1), normal);
   ring1.quaternion.copy(q);
   ring2.quaternion.copy(q);
+
   group.position.copy(pos);
   globeGroup.add(group);
+
   locationObj = { group, ring1, ring2, lat, lng, city, country };
 
+  // Update side panels
   document.getElementById('locCity').textContent    = city    || '--';
   document.getElementById('locCountry').textContent = country || '--';
   document.getElementById('locLat').textContent     = lat.toFixed(4)+'°';
@@ -494,7 +472,19 @@ function buildLocationMarker(lat, lng, city, country){
   document.getElementById('locLabelName').textContent = city || 'Your Location';
   document.getElementById('locLabelSub').textContent = `${lat.toFixed(2)}° · ${lng.toFixed(2)}°`;
 
-  // Rotate globe to face location
+  // Update source badge
+  const badge = document.getElementById('locSource');
+  if(source === 'gps'){
+    badge.textContent = '⬤ GPS';
+    badge.className = 'gps';
+    document.getElementById('locStatusText').textContent = 'GPS LOCKED';
+  } else {
+    badge.textContent = '⬤ IP';
+    badge.className = 'ip';
+    document.getElementById('locStatusText').textContent = 'IP LOCATED';
+  }
+
+  // Spin globe to show location
   globeGroup.rotation.y = -(lng+180)*Math.PI/180+Math.PI;
   globeGroup.rotation.x = -lat*Math.PI/180*0.5;
 }
@@ -504,15 +494,21 @@ function updateLabel(){
   if(!locationObj) return;
   const el = document.getElementById('locationLabel');
   const pos3 = locationObj.group.position.clone();
+
   globeGroup.updateMatrixWorld();
   pos3.applyMatrix4(globeGroup.matrixWorld);
+
+  // Check if marker is on the facing hemisphere
   const invMat = new THREE.Matrix4().copy(globeGroup.matrixWorld).invert();
   const camLocal = camera.position.clone().applyMatrix4(invMat).normalize();
   const markerLocal = locationObj.group.position.clone().normalize();
   const facing = markerLocal.dot(camLocal) > 0.05;
+
   if(!facing){ el.style.opacity='0'; return; }
+
   const proj = pos3.clone().project(camera);
   if(proj.z > 1){ el.style.opacity='0'; return; }
+
   const x = (proj.x*0.5+0.5)*window.innerWidth;
   const y = (-proj.y*0.5+0.5)*window.innerHeight;
   el.style.left  = x+'px';
@@ -526,6 +522,7 @@ function updateLOD(){
   if     (camDist < 360) target='high';
   else if(camDist < 650) target='med';
   else                   target='low';
+
   if(target!==currentLOD && dotMeshes[target]){
     dotMeshes[currentLOD].visible=false;
     dotMeshes[target].visible=true;
@@ -541,6 +538,7 @@ function updateLOD(){
 // ── Event handlers ────────────────────────────
 function setupEvents(){
   const c = renderer.domElement;
+
   c.addEventListener('mousedown', e=>{
     isDragging=true; rotVel={x:0,y:0};
     prevMouse={x:e.clientX,y:e.clientY};
@@ -556,12 +554,14 @@ function setupEvents(){
   });
   c.addEventListener('mouseup',  ()=>isDragging=false);
   c.addEventListener('mouseleave',()=>isDragging=false);
+
   c.addEventListener('wheel', e=>{
     e.preventDefault();
     camDist = Math.max(260, Math.min(1100, camDist+e.deltaY*0.4));
     camera.position.z = camDist;
     updateLOD();
   },{passive:false});
+
   let touchPrev={x:0,y:0};
   let pinchStart=0;
   c.addEventListener('touchstart', e=>{
@@ -591,6 +591,7 @@ function setupEvents(){
     }
   },{passive:false});
   c.addEventListener('touchend',()=>isDragging=false);
+
   window.addEventListener('resize',()=>{
     camera.aspect=window.innerWidth/window.innerHeight;
     camera.updateProjectionMatrix();
@@ -618,6 +619,7 @@ function calcFPS(){
 // ── Render loop ────────────────────────────────
 function animate(){
   requestAnimationFrame(animate);
+
   if(!isDragging){
     globeGroup.rotation.y += 0.0008;
     rotVel.x*=0.93; rotVel.y*=0.93;
@@ -625,6 +627,7 @@ function animate(){
     if(Math.abs(rotVel.x)>0.00005) globeGroup.rotation.x+=rotVel.x;
     globeGroup.rotation.x=Math.max(-Math.PI*0.5,Math.min(Math.PI*0.5,globeGroup.rotation.x));
   }
+
   if(locationObj){
     const t=Date.now()*0.0025;
     const s1=1+0.45*Math.sin(t);
@@ -634,6 +637,7 @@ function animate(){
     locationObj.ring1.material.opacity=0.5+0.35*Math.abs(Math.sin(t));
     locationObj.ring2.material.opacity=0.2+0.2*Math.abs(Math.sin(t*0.7));
   }
+
   updateLabel();
   updateClock();
   document.getElementById('fpsVal').textContent=calcFPS();
@@ -649,7 +653,7 @@ function showToast(type, tag, msg, autoDismissMs=0){
   const container = document.getElementById('errorToast');
   if(!container) return;
   const card = document.createElement('div');
-  card.className = 'err-card'+(type==='warn'?' warn':type==='info'?' info':'');
+  card.className = 'err-card' + (type==='warn'?' warn' : type==='info'?' info' : '');
   const time = new Date().toLocaleTimeString();
   card.innerHTML =
     '<div class="err-header">'+
@@ -660,8 +664,8 @@ function showToast(type, tag, msg, autoDismissMs=0){
   container.appendChild(card);
   if(autoDismissMs>0){
     const t=setTimeout(()=>{
-      card.style.opacity='0';card.style.transition='opacity .4s';
-      setTimeout(()=>card.remove(),400);
+      card.style.opacity='0'; card.style.transition='opacity .4s';
+      setTimeout(()=>{ if(card.parentNode) card.remove(); },400);
     },autoDismissMs);
     toastTimers.push(t);
   }
@@ -673,147 +677,202 @@ function clearToasts(){
   const c=document.getElementById('errorToast');
   if(!c) return;
   [...c.children].forEach(el=>{
-    el.style.opacity='0';el.style.transition='opacity .3s';
-    setTimeout(()=>el.remove(),300);
+    el.style.opacity='0'; el.style.transition='opacity .3s';
+    setTimeout(()=>{ if(el.parentNode) el.remove(); },300);
   });
 }
 
 // ══════════════════════════════════════════════
-// GPS / GEOLOCATION LOGIC
+// GEOLOCATION — GPS THEN IP FALLBACK
 // ══════════════════════════════════════════════
 
-// Returns {lat, lng} from GPS or rejects
-function getGPSLocation(){
-  return new Promise((resolve, reject)=>{
-    if(!navigator.geolocation){
-      reject(new Error('Geolocation API not supported'));
-      return;
-    }
-    navigator.geolocation.getCurrentPosition(
-      pos => resolve({ lat: pos.coords.latitude, lng: pos.coords.longitude }),
-      err => reject(err),
-      { enableHighAccuracy: true, timeout: 12000, maximumAge: 0 }
-    );
-  });
-}
-
-// Reverse geocode GPS coords using a free API
+// Reverse-geocode lat/lng to city/country using a free API
 async function reverseGeocode(lat, lng){
   try{
-    const r = await fetch(
-      `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&zoom=10`,
-      { headers: { 'Accept-Language': 'en' } }
-    );
+    const url = `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json`;
+    const r = await Promise.race([
+      fetch(url, {headers:{'Accept-Language':'en'}}),
+      new Promise((_,rej)=>setTimeout(()=>rej(new Error('Timeout')),5000))
+    ]);
+    if(!r.ok) throw new Error('HTTP '+r.status);
     const d = await r.json();
-    const a = d.address || {};
-    return {
-      city:    a.city || a.town || a.village || a.county || '',
-      region:  a.state || a.region || '',
-      country: a.country || '',
-    };
+    const city    = d.address?.city || d.address?.town || d.address?.village || d.address?.county || 'Unknown';
+    const country = d.address?.country || 'Unknown';
+    return {city, country};
   }catch(e){
-    return { city:'', region:'', country:'' };
+    return {city:'Your Location', country:''};
   }
 }
 
-// IP-based geolocation (multi-API fallback)
-async function getIPLocation(){
-  const IP_APIS = [
-    {
-      url:'https://ipwho.is/',
-      parse: d => ({
-        ip:d.ip, isp:d.connection?.isp||d.org||'',
-        city:d.city, region:d.region, country:d.country,
-        lat:parseFloat(d.latitude), lng:parseFloat(d.longitude),
-        ok: !d.message && d.success!==false
-      })
-    },
-    {
-      url:'https://ip-api.com/json/?fields=status,message,country,regionName,city,lat,lon,isp,org,query',
-      parse: d => ({
-        ip:d.query, isp:d.org||d.isp||'',
-        city:d.city, region:d.regionName, country:d.country,
-        lat:parseFloat(d.lat), lng:parseFloat(d.lon),
-        ok: d.status==='success'
-      })
-    },
-    {
-      url:'https://ipapi.co/json/',
-      parse: d => ({
-        ip:d.ip, isp:d.org||d.isp||'',
-        city:d.city, region:d.region, country:d.country_name||d.country,
-        lat:parseFloat(d.latitude), lng:parseFloat(d.longitude),
-        ok: !d.error
-      })
-    },
-    {
-      url:'https://freeipapi.com/api/json',
-      parse: d => ({
-        ip:d.ipAddress, isp:d.isp||'',
-        city:d.cityName, region:d.regionName, country:d.countryName,
-        lat:parseFloat(d.latitude), lng:parseFloat(d.longitude),
-        ok: !!d.ipAddress
-      })
-    },
-  ];
+// Promise wrapper for getCurrentPosition
+function getGPSPosition(options={}){
+  return new Promise((resolve, reject)=>{
+    if(!navigator.geolocation){
+      reject(new Error('Geolocation not supported'));
+      return;
+    }
+    navigator.geolocation.getCurrentPosition(resolve, reject, {
+      enableHighAccuracy: true,
+      timeout: 10000,
+      maximumAge: 0,
+      ...options
+    });
+  });
+}
 
+// Check current permission state (non-blocking, best-effort)
+async function checkGeoPermission(){
+  if(!navigator.permissions) return 'prompt';
+  try{
+    const status = await navigator.permissions.query({name:'geolocation'});
+    return status.state; // 'granted' | 'denied' | 'prompt'
+  }catch(e){
+    return 'prompt';
+  }
+}
+
+// Show / hide the grant button
+function showGrantBtn(){
+  const btn = document.getElementById('grantLocBtn');
+  btn.classList.remove('hidden');
+  // Also shift stats panel up so they don't overlap
+  document.getElementById('statsPanel').style.bottom = '62px';
+}
+function hideGrantBtn(){
+  const btn = document.getElementById('grantLocBtn');
+  btn.classList.add('hidden');
+  document.getElementById('statsPanel').style.bottom = '14px';
+}
+
+// IP geolocation — multiple API fallback
+const IP_APIS = [
+  {
+    url:'https://ipwho.is/',
+    parse: d => ({
+      ip:d.ip, isp:d.connection?.isp||d.org||'',
+      city:d.city, region:d.region, country:d.country,
+      lat:parseFloat(d.latitude), lng:parseFloat(d.longitude),
+      ok: !d.message && d.success!==false
+    })
+  },
+  {
+    url:'https://ip-api.com/json/?fields=status,message,country,regionName,city,lat,lon,isp,org,query',
+    parse: d => ({
+      ip:d.query, isp:d.org||d.isp||'',
+      city:d.city, region:d.regionName, country:d.country,
+      lat:parseFloat(d.lat), lng:parseFloat(d.lon),
+      ok: d.status==='success'
+    })
+  },
+  {
+    url:'https://ipapi.co/json/',
+    parse: d => ({
+      ip:d.ip, isp:d.org||d.isp||'',
+      city:d.city, region:d.region, country:d.country_name||d.country,
+      lat:parseFloat(d.latitude), lng:parseFloat(d.longitude),
+      ok: !d.error
+    })
+  },
+  {
+    url:'https://freeipapi.com/api/json',
+    parse: d => ({
+      ip:d.ipAddress, isp:d.isp||'',
+      city:d.cityName, region:d.regionName, country:d.countryName,
+      lat:parseFloat(d.latitude), lng:parseFloat(d.longitude),
+      ok: !!d.ipAddress
+    })
+  },
+];
+
+async function fetchIPLocation(){
+  const errs = [];
   for(const api of IP_APIS){
     try{
       const hostname = new URL(api.url).hostname;
-      showToast('info','TRYING '+hostname,'Attempting IP geolocation...', 2000);
+      showToast('info','IP: '+hostname,'Attempting geolocation...', 2000);
       const r = await Promise.race([
         fetch(api.url),
         new Promise((_,rej)=>setTimeout(()=>rej(new Error('Timeout 5s')),5000))
       ]);
-      if(!r.ok) throw new Error('HTTP '+r.status);
+      if(!r.ok) throw new Error('HTTP '+r.status+' '+r.statusText);
       const raw = await r.json();
       const d   = api.parse(raw);
-      if(!d.ok) throw new Error('API failure status');
-      if(!d.lat||!d.lng) throw new Error('No coordinates');
+      if(!d.ok)         throw new Error('API returned failure status');
+      if(!d.lat||!d.lng) throw new Error('No coordinates in response');
       clearToasts();
       return d;
     }catch(err){
       const host = new URL(api.url).hostname;
+      errs.push({src:host, msg:err.message||String(err)});
       showToast('warn','FAIL: '+host, err.message||String(err), 3000);
       await new Promise(r=>setTimeout(r,300));
     }
   }
-  throw new Error('All IP APIs failed');
+  return null; // all failed
 }
 
-// Show/hide mini GPS button
-function showMiniGpsBtn(onGrant){
-  const btn = document.getElementById('gpsMiniBtn');
-  btn.style.display = 'flex';
-  btn.onclick = async ()=>{
-    btn.style.opacity = '0.4';
-    btn.style.pointerEvents = 'none';
-    try{
-      const coords = await getGPSLocation();
-      hideMiniGpsBtn();
-      onGrant(coords);
-    }catch(e){
-      btn.style.opacity = '1';
-      btn.style.pointerEvents = 'all';
-      showToast('warn','GPS DENIED', e.message || 'Permission denied', 3500);
-    }
-  };
+// Apply an IP location result to the globe
+function applyIPLocation(d){
+  if(!d) return false;
+  const {ip, isp, city, region, country, lat, lng} = d;
+  document.getElementById('locIP').textContent     = ip      || '--';
+  document.getElementById('locISP').textContent    = (isp||'').length>24 ? isp.slice(0,24)+'…' : (isp||'--');
+  document.getElementById('locRegion').textContent = region  || '--';
+  buildLocationMarker(lat, lng, city||'Unknown', country||'Unknown', 'ip');
+  document.getElementById('locLabelSub').textContent = (ip||'')+'· '+lat.toFixed(2)+'° '+lng.toFixed(2)+'°';
+  clearToasts();
+  showToast('info','IP LOCK', (ip||'?')+' · '+(city||'?')+', '+(country||'?'), 4000);
+  return true;
 }
 
-function hideMiniGpsBtn(){
-  const btn = document.getElementById('gpsMiniBtn');
-  btn.style.transition = 'opacity .4s';
-  btn.style.opacity = '0';
-  setTimeout(()=>{ btn.style.display='none'; btn.style.opacity='1'; }, 400);
+// Apply a GPS fix to the globe
+async function applyGPSLocation(position){
+  const lat = position.coords.latitude;
+  const lng = position.coords.longitude;
+
+  showToast('info','GPS LOCK','Resolving city name...', 3000);
+  const {city, country} = await reverseGeocode(lat, lng);
+
+  // Keep IP info if already loaded, just update coords
+  const currentIP = document.getElementById('locIP').textContent;
+  if(!currentIP || currentIP === 'Scanning...' || currentIP === '--'){
+    document.getElementById('locIP').textContent = 'GPS';
+  }
+  document.getElementById('locRegion').textContent = country || '--';
+
+  buildLocationMarker(lat, lng, city, country, 'gps');
+  clearToasts();
+  showToast('info','GPS ACQUIRED', city+', '+country+' · '+lat.toFixed(4)+'° '+lng.toFixed(4)+'°', 5000);
 }
 
-// Check cached permission state (if available)
-async function checkPermissionState(){
+// ── Grant button handler ──────────────────────
+async function requestGPSAndApply(){
+  const btn = document.getElementById('grantLocBtn');
+  btn.textContent = 'Requesting...';
+  btn.style.pointerEvents = 'none';
+
   try{
-    const status = await navigator.permissions.query({ name: 'geolocation' });
-    return status.state; // 'granted' | 'denied' | 'prompt'
-  }catch(e){
-    return 'prompt';
+    showToast('info','GPS','Requesting location permission...', 3000);
+    const position = await getGPSPosition();
+    geoPermissionState = 'granted';
+    hideGrantBtn();
+    await applyGPSLocation(position);
+  }catch(err){
+    btn.innerHTML = '<div class="btn-icon"></div> Grant Location Permission';
+    btn.style.pointerEvents = 'all';
+    const code = err.code;
+    if(code === 1){
+      // User denied
+      geoPermissionState = 'denied';
+      showToast('warn','GPS DENIED','Permission denied — using IP location', 4000);
+      hideGrantBtn(); // They explicitly denied, no point showing button
+    } else if(code === 2){
+      showToast('warn','GPS ERROR','Position unavailable — try again', 4000);
+    } else if(code === 3){
+      showToast('warn','GPS TIMEOUT','Location request timed out — try again', 4000);
+    } else {
+      showToast('warn','GPS ERROR', err.message||'Unknown error', 4000);
+    }
   }
 }
 
@@ -825,6 +884,7 @@ async function main(){
   scene = new THREE.Scene();
   camera = new THREE.PerspectiveCamera(45, window.innerWidth/window.innerHeight, 1, 5000);
   camera.position.z = camDist;
+
   renderer = new THREE.WebGLRenderer({canvas:document.getElementById('c'), antialias:true, alpha:true});
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
@@ -838,6 +898,9 @@ async function main(){
   setupEvents();
   animate();
 
+  // Wire up grant button
+  document.getElementById('grantLocBtn').addEventListener('click', requestGPSAndApply);
+
   setLoad(10,'Fetching world topology...');
   let topo;
   try{
@@ -850,15 +913,17 @@ async function main(){
   const land      = topojson.feature(topo, topo.objects.land);
   const countries = topojson.feature(topo, topo.objects.countries);
   const borders   = topojson.mesh(topo, topo.objects.countries);
+
   document.getElementById('countryCount').textContent = countries.features.length;
 
-  // Land mask
+  // Build land mask on offscreen canvas
   const MW=2048, MH=1024;
   const mc = document.createElement('canvas');
   mc.width=MW; mc.height=MH;
   const mctx = mc.getContext('2d');
   mctx.fillStyle='#000'; mctx.fillRect(0,0,MW,MH);
   mctx.fillStyle='#fff';
+
   function drawGeomToMask(geom){
     const {type,coordinates}=geom;
     function drawRing(ring){
@@ -872,8 +937,10 @@ async function main(){
     else if(type==='MultiPolygon') coordinates.forEach(p=>drawRing(p[0]));
     else if(type==='GeometryCollection') geom.geometries.forEach(drawGeomToMask);
   }
+
   if(land.type==='Feature') drawGeomToMask(land.geometry);
   else if(land.type==='FeatureCollection') land.features.forEach(f=>drawGeomToMask(f.geometry));
+
   const imgData = mctx.getImageData(0,0,MW,MH).data;
   function isLand(lat,lng){
     const x=Math.max(0,Math.min(MW-1,Math.floor(((lng+180)%360)/360*MW)));
@@ -883,6 +950,7 @@ async function main(){
 
   setLoad(50,'Generating dot field LODs...');
   const tex = makeDotTex();
+
   const lodConfigs = [{key:'low',res:3.0},{key:'med',res:2.0},{key:'high',res:1.2}];
   for(const {key,res} of lodConfigs){
     const {mesh,count} = buildDots(res, isLand, tex);
@@ -895,124 +963,79 @@ async function main(){
   setLoad(75,'Building country borders...');
   buildBorders(borders);
 
-  // ── LOCATION RESOLUTION ────────────────────
-  setLoad(88,'Resolving your position...');
+  setLoad(88,'Locating your position...');
 
-  const permState = await checkPermissionState();
+  // ── Step 1: Check existing permission state ──
+  geoPermissionState = await checkGeoPermission();
 
-  // Helper: apply GPS data to globe
-  async function applyGPS(coords){
-    showToast('info','GPS ACQUIRED',`Lat ${coords.lat.toFixed(4)} · Lng ${coords.lng.toFixed(4)}`, 3000);
-    setLoad(94,'Reverse geocoding...');
-    const geo = await reverseGeocode(coords.lat, coords.lng);
-    document.getElementById('locIP').textContent     = 'GPS';
-    document.getElementById('locISP').textContent    = 'Device GPS';
-    document.getElementById('locRegion').textContent = geo.region  || '--';
-
-    const tag = document.getElementById('locSourceTag');
-    tag.textContent = 'GPS'; tag.className='loc-source-tag gps';
-
-    buildLocationMarker(coords.lat, coords.lng,
-      geo.city || 'GPS Location',
-      geo.country || '');
-    document.getElementById('locLabelSub').textContent =
-      `GPS · ${coords.lat.toFixed(2)}° ${coords.lng.toFixed(2)}°`;
-    clearToasts();
-    showToast('info','LOCK ACQUIRED — GPS', `${geo.city||''}, ${geo.country||''}`, 4000);
-  }
-
-  // Helper: apply IP data to globe
-  async function applyIP(data){
-    const {ip,isp,city,region,country,lat,lng} = data;
-    document.getElementById('locIP').textContent     = ip      || '--';
-    document.getElementById('locISP').textContent    = (isp||'').length>24 ? isp.slice(0,24)+'…' : (isp||'--');
-    document.getElementById('locRegion').textContent = region  || '--';
-
-    const tag = document.getElementById('locSourceTag');
-    tag.textContent = 'IP'; tag.className='loc-source-tag ip';
-
-    buildLocationMarker(lat, lng, city||'Unknown', country||'Unknown');
-    document.getElementById('locLabelSub').textContent =
-      `IP · ${lat.toFixed(2)}° ${lng.toFixed(2)}°`;
-    clearToasts();
-    showToast('info','LOCK ACQUIRED — IP', `${ip} · ${city}, ${country}`, 4000);
-  }
-
-  if(permState === 'granted'){
-    // Already have permission — get GPS silently
+  if(geoPermissionState === 'granted'){
+    // Permission already granted — get GPS immediately
+    showToast('info','GPS','Permission already granted, acquiring signal...', 3000);
     try{
-      const coords = await getGPSLocation();
-      await applyGPS(coords);
-    }catch(e){
-      showToast('warn','GPS FALLBACK', 'Falling back to IP geolocation', 2500);
-      try{ await applyIP(await getIPLocation()); }
-      catch(e2){ buildLocationMarker(20.59, 85.09, 'Default Location', 'IN'); }
+      const position = await getGPSPosition();
+      await applyGPSLocation(position);
+      hideGrantBtn();
+    }catch(gpsErr){
+      showToast('warn','GPS FALLBACK','GPS failed: '+gpsErr.message+' — trying IP...', 3000);
+      const ipData = await fetchIPLocation();
+      if(!applyIPLocation(ipData)){
+        buildLocationMarker(23.35, 85.33, 'Jharkhand, India', 'India', 'ip');
+        document.getElementById('locCity').textContent = 'Jharkhand';
+        showToast('warn','ALL FAILED','Could not determine location — showing default', 5000);
+      }
+      // Still hide button since they already granted GPS
+      hideGrantBtn();
+    }
+  } else if(geoPermissionState === 'denied'){
+    // Already denied — go straight to IP, no button needed
+    showToast('warn','GPS DENIED','Location permission was denied — using IP', 3000);
+    const ipData = await fetchIPLocation();
+    if(!applyIPLocation(ipData)){
+      buildLocationMarker(23.35, 85.33, 'Jharkhand, India', 'India', 'ip');
+    }
+    hideGrantBtn();
+  } else {
+    // State is 'prompt' — try GPS (will show browser permission dialog)
+    showToast('info','GPS','Requesting location permission...', 4000);
+    let gpsSuccess = false;
+    try{
+      const position = await getGPSPosition();
+      geoPermissionState = 'granted';
+      await applyGPSLocation(position);
+      gpsSuccess = true;
+      hideGrantBtn();
+      clearToasts();
+    }catch(gpsErr){
+      if(gpsErr.code === 1){
+        // User dismissed/denied the prompt
+        geoPermissionState = 'denied';
+        showToast('warn','GPS DENIED','Permission denied — using IP location', 3000);
+        clearToasts();
+        // Show the grant button so they can change their mind
+        showGrantBtn();
+      } else {
+        showToast('warn','GPS ERROR', gpsErr.message||'GPS unavailable', 3000);
+        showGrantBtn();
+      }
     }
 
-  } else if(permState === 'denied'){
-    // Already denied — go straight to IP, show mini button
-    showToast('warn','GPS DENIED','Using IP location. Grant permission to improve accuracy.', 4000);
-    try{ await applyIP(await getIPLocation()); }
-    catch(e){ buildLocationMarker(20.59, 85.09, 'Default Location', 'IN'); }
-
-    // Show HUD then mini button
-    setLoad(100,'Ready!');
-    await new Promise(r=>setTimeout(r,400));
-    document.getElementById('loadScreen').style.display='none';
-    document.getElementById('hud').style.display='block';
-    updateLOD();
-
-    showMiniGpsBtn(async (coords)=>{
-      await applyGPS(coords);
-    });
-    return; // exit early (HUD already shown)
-
-  } else {
-    // 'prompt' — show our custom modal first
-    await new Promise(resolve=>{
-      const modal = document.getElementById('gpsBtn');
-      modal.style.display = 'flex';
-
-      document.getElementById('gpsBtnGrant').onclick = async ()=>{
-        modal.style.opacity='0.5';
-        modal.style.pointerEvents='none';
-        try{
-          const coords = await getGPSLocation();
-          modal.style.display='none';
-          resolve({ type:'gps', coords });
-        }catch(e){
-          showToast('warn','GPS DENIED', e.message||'Permission denied', 3000);
-          modal.style.display='none';
-          resolve({ type:'denied' });
-        }
-      };
-
-      document.getElementById('gpsBtnSkip').onclick = ()=>{
-        modal.style.display='none';
-        resolve({ type:'skip' });
-      };
-    }).then(async result=>{
-      if(result.type === 'gps'){
-        await applyGPS(result.coords);
-      } else {
-        // denied or skip → IP fallback
-        if(result.type === 'denied'){
-          showToast('warn','GPS DENIED','Falling back to IP geolocation', 2500);
-        }
-        try{ await applyIP(await getIPLocation()); }
-        catch(e){ buildLocationMarker(20.59, 85.09, 'Default Location', 'IN'); }
-
-        // Show mini re-grant button (only if denied, not skip)
-        if(result.type === 'denied'){
-          // Schedule after HUD shows
-          setTimeout(()=>{
-            showMiniGpsBtn(async (coords)=>{
-              await applyGPS(coords);
-            });
-          }, 800);
-        }
+    // Regardless of GPS result, also fetch IP location
+    // (IP will be the fallback if GPS failed; if GPS succeeded we still
+    //  want the IP/ISP info populated in the panel)
+    const ipData = await fetchIPLocation();
+    if(!gpsSuccess){
+      // GPS failed — apply IP location to globe
+      if(!applyIPLocation(ipData)){
+        buildLocationMarker(23.35, 85.33, 'Jharkhand, India', 'India', 'ip');
+        showToast('warn','ALL FAILED','Could not geolocate — showing default', 5000);
       }
-    });
+    } else {
+      // GPS succeeded — just populate IP/ISP text fields from IP API
+      if(ipData){
+        document.getElementById('locIP').textContent  = ipData.ip  || '--';
+        document.getElementById('locISP').textContent = (ipData.isp||'').length>24 ? ipData.isp.slice(0,24)+'…' : (ipData.isp||'--');
+      }
+    }
   }
 
   setLoad(100,'Ready!');
@@ -1022,8 +1045,10 @@ async function main(){
   updateLOD();
 }
 
-main().catch(e=>{ document.getElementById('loadMsg').textContent='Error: '+e.message; });
+main().catch(e=>{
+  console.error(e);
+  document.getElementById('loadMsg').textContent='Error: '+e.message;
+});
 </script>
-
 </body>
 </html>
