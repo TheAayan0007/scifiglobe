@@ -8,27 +8,15 @@
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#010409; --panel:rgba(5,12,28,0.92); --border:#0d2137;
-  --accent:#00ffe7; --accent2:#ff2d6b; --accent3:#ffc300; --dim:#2a4060; --text:#a0c4e0;
+  --bg:#010409;--panel:rgba(5,12,28,0.92);--border:#0d2137;
+  --accent:#00ffe7;--accent2:#ff2d6b;--accent3:#ffc300;--dim:#2a4060;--text:#a0c4e0;
 }
-body{
-  background:var(--bg);color:var(--text);
-  font-family:'Rajdhani',sans-serif;
-  height:100vh;overflow:hidden;
-}
-body::after{
-  content:'';position:fixed;inset:0;
-  background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,255,231,0.008) 3px,rgba(0,255,231,0.008) 4px);
-  pointer-events:none;z-index:9999;
-}
+body{background:var(--bg);color:var(--text);font-family:'Rajdhani',sans-serif;height:100vh;overflow:hidden;}
+body::after{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,255,231,0.008) 3px,rgba(0,255,231,0.008) 4px);pointer-events:none;z-index:9999;}
 #c{position:fixed;inset:0;width:100%;height:100%;display:block;}
 
 /* ── LOAD SCREEN ── */
-#loadScreen{
-  position:fixed;inset:0;z-index:500;
-  background:var(--bg);
-  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.2rem;
-}
+#loadScreen{position:fixed;inset:0;z-index:500;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.2rem;}
 .load-title{font-family:'Orbitron',monospace;font-size:.65rem;letter-spacing:.5em;color:var(--accent)}
 .load-pct{font-family:'Orbitron',monospace;font-size:2.2rem;font-weight:900;color:var(--accent)}
 .load-bar-outer{width:320px;height:3px;background:rgba(0,255,231,.08)}
@@ -36,15 +24,10 @@ body::after{
 .load-msg{font-size:.7rem;letter-spacing:.2em;color:var(--dim);text-transform:uppercase;font-family:'Rajdhani',sans-serif}
 
 /* ── HUD ── */
-#hud{position:fixed;inset:0;pointer-events:none;z-index:20;display:none;}
+#hud{position:fixed;inset:0;pointer-events:none;z-index:20;display:none;transition:opacity .35s;}
+#hud.hud-hidden{opacity:0;pointer-events:none!important;}
 
-.hdr{
-  position:absolute;top:0;left:0;right:0;
-  padding:.8rem 1.4rem;
-  display:flex;align-items:center;justify-content:space-between;
-  background:linear-gradient(180deg,rgba(1,4,9,.95) 0%,transparent 100%);
-  border-bottom:1px solid rgba(0,255,231,.06);
-}
+.hdr{position:absolute;top:0;left:0;right:0;padding:.8rem 1.4rem;display:flex;align-items:center;justify-content:space-between;background:linear-gradient(180deg,rgba(1,4,9,.95) 0%,transparent 100%);border-bottom:1px solid rgba(0,255,231,.06);}
 .hdr-name{font-family:'Orbitron',monospace;font-size:1rem;font-weight:900;color:#fff;letter-spacing:.1em;}
 .hdr-name span{color:var(--accent)}
 .hdr-ver{font-family:'Orbitron',monospace;font-size:.48rem;letter-spacing:.4em;color:var(--accent3);margin-top:.1rem}
@@ -53,17 +36,10 @@ body::after{
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
 .hdr-time{font-family:'Orbitron',monospace;font-size:.6rem;color:var(--dim);letter-spacing:.15em}
 
-.panel{
-  position:absolute;z-index:20;background:var(--panel);border:1px solid var(--border);
-  padding:.8rem 1rem;backdrop-filter:blur(8px);
-}
-.panel-title{font-family:'Orbitron',monospace;font-size:.45rem;letter-spacing:.35em;color:var(--dim);text-transform:uppercase;margin-bottom:.7rem;padding-bottom:.4rem;border-bottom:1px solid var(--border)}
+.panel{position:absolute;z-index:20;background:var(--panel);border:1px solid var(--border);padding:.8rem 1rem;backdrop-filter:blur(8px);}
+.panel-title{font-family:'Orbitron',monospace;font-size:.45rem;letter-spacing:.35em;color:var(--dim);text-transform:uppercase;margin-bottom:.7rem;padding-bottom:.4rem;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;}
 
-/* Location panel - bottom left */
-#locPanel{
-  bottom:14px;left:14px;min-width:230px;
-  clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,0 100%);
-}
+#locPanel{bottom:14px;left:14px;min-width:230px;clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,0 100%);}
 .loc-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:.35rem;font-size:.7rem}
 .loc-row:last-child{margin-bottom:0}
 .loc-key{color:var(--dim);letter-spacing:.05em;font-family:'Rajdhani',sans-serif}
@@ -71,68 +47,42 @@ body::after{
 .loc-status{display:flex;align-items:center;gap:.4rem;margin-top:.6rem;padding-top:.5rem;border-top:1px solid var(--border);font-family:'Orbitron',monospace;font-size:.5rem;color:var(--accent);letter-spacing:.2em}
 .loc-status-dot{width:5px;height:5px;border-radius:50%;background:var(--accent);animation:blink 1s infinite}
 
-/* Stats panel - bottom right (shift up when permission btn visible) */
-#statsPanel{
-  bottom:14px;right:14px;min-width:150px;
-  clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,0 100%);
-  transition:bottom .3s ease;
-}
+#statsPanel{bottom:14px;right:14px;min-width:150px;clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,0 100%);transition:bottom .3s;}
 .stat-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:.35rem;font-size:.7rem}
 .stat-row:last-child{margin-bottom:0}
 .stat-label{color:var(--dim);letter-spacing:.05em;font-family:'Rajdhani',sans-serif}
 .stat-val{font-family:'Orbitron',monospace;font-size:.6rem;font-weight:700;color:var(--accent)}
 
-/* Controls panel - top right */
-#ctrlPanel{top:62px;right:14px;clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,0 100%)}
+#ctrlPanel{top:62px;right:70px;clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,0 100%)}
 .ctrl-row{display:flex;align-items:center;gap:.5rem;margin-bottom:.3rem;font-size:.65rem;color:var(--dim)}
 .ctrl-row:last-child{margin-bottom:0}
 .ctrl-key{font-family:'Orbitron',monospace;font-size:.45rem;color:var(--accent);border:1px solid var(--dim);padding:.1rem .35rem;letter-spacing:.1em}
 
-/* LOD panel - top left */
 #lodPanel{top:62px;left:14px;clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,0 100%)}
 .lod-bar-outer{width:100%;height:2px;background:var(--border);margin-top:.3rem;border-radius:1px}
 .lod-bar-inner{height:100%;background:var(--accent);transition:width .4s ease;border-radius:1px;box-shadow:0 0 6px var(--accent)}
 #lodLabel{font-family:'Orbitron',monospace;font-size:.55rem;color:var(--accent);letter-spacing:.2em}
 #zoomVal{font-family:'Orbitron',monospace;font-size:1.4rem;font-weight:900;color:var(--accent);line-height:1}
 
-/* Corner brackets */
 .bracket{position:absolute;z-index:15;width:28px;height:28px;border-color:var(--accent);border-style:solid;opacity:.3}
 .bracket.tl{top:54px;left:12px;border-width:2px 0 0 2px}
 .bracket.tr{top:54px;right:12px;border-width:2px 2px 0 0}
 .bracket.bl{bottom:12px;left:12px;border-width:0 0 2px 2px}
 .bracket.br{bottom:12px;right:12px;border-width:0 2px 2px 0}
 
-/* Floating location label */
-#locationLabel{
-  position:fixed;pointer-events:none;z-index:30;
-  transform:translate(-50%,-100%);
-  opacity:0;transition:opacity .3s;
-}
-.loc-label-box{
-  background:rgba(5,12,28,.9);border:1px solid var(--accent3);
-  padding:.4rem .7rem;
-  clip-path:polygon(0 0,calc(100% - 8px) 0,100% 8px,100% 100%,0 100%);
-  white-space:nowrap;
-}
+#locationLabel{position:fixed;pointer-events:none;z-index:30;transform:translate(-50%,-100%);opacity:0;transition:opacity .3s;}
+.loc-label-box{background:rgba(5,12,28,.9);border:1px solid var(--accent3);padding:.4rem .7rem;clip-path:polygon(0 0,calc(100% - 8px) 0,100% 8px,100% 100%,0 100%);white-space:nowrap;}
 .loc-label-name{font-family:'Orbitron',monospace;font-size:.6rem;font-weight:700;color:var(--accent3);letter-spacing:.1em}
 .loc-label-sub{font-size:.55rem;color:var(--dim);letter-spacing:.05em;margin-top:.2rem}
-.loc-label-line{
-  width:1px;height:20px;background:linear-gradient(180deg,var(--accent3),transparent);
-  margin:0 auto;
-}
+.loc-label-line{width:1px;height:20px;background:linear-gradient(180deg,var(--accent3),transparent);margin:0 auto;}
 
-/* ── TOAST NOTIFICATIONS ── */
-#errorToast{
-  position:fixed;bottom:70px;right:14px;z-index:100;
-  display:flex;flex-direction:column;gap:.4rem;
-  max-width:320px;pointer-events:none;
-}
-.err-card{
-  background:rgba(5,10,24,.95);border:1px solid var(--accent2);
-  padding:.5rem .75rem;
-  clip-path:polygon(0 0,calc(100% - 8px) 0,100% 8px,100% 100%,0 100%);
-  animation:slideIn .25s ease;
-}
+#locSource{font-family:'Orbitron',monospace;font-size:.42rem;letter-spacing:.15em;padding:.1rem .35rem;border-radius:2px;background:rgba(0,255,231,.07);border:1px solid var(--dim);color:var(--dim);}
+#locSource.gps{color:var(--accent);border-color:var(--accent);background:rgba(0,255,231,.1)}
+#locSource.ip{color:var(--accent3);border-color:var(--accent3);background:rgba(255,195,0,.08)}
+
+/* ── TOAST ── */
+#errorToast{position:fixed;bottom:70px;right:14px;z-index:100;display:flex;flex-direction:column;gap:.4rem;max-width:320px;pointer-events:none;}
+.err-card{background:rgba(5,10,24,.95);border:1px solid var(--accent2);padding:.5rem .75rem;clip-path:polygon(0 0,calc(100% - 8px) 0,100% 8px,100% 100%,0 100%);animation:slideIn .25s ease;}
 .err-card.warn{border-color:var(--accent3);}
 .err-card.info{border-color:var(--accent);}
 .err-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:.25rem}
@@ -145,45 +95,77 @@ body::after{
 
 /* ── GRANT LOCATION BUTTON ── */
 #grantLocBtn{
-  position:fixed;bottom:14px;left:50%;transform:translateX(-50%);
-  z-index:100;pointer-events:all;
-  display:flex;align-items:center;gap:.6rem;
-  background:rgba(5,12,28,.95);
-  border:1px solid var(--accent3);
-  padding:.55rem 1.2rem;
-  clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,10px 100%,0 calc(100% - 10px));
-  cursor:pointer;
-  font-family:'Orbitron',monospace;font-size:.6rem;font-weight:700;
-  letter-spacing:.2em;color:var(--accent3);
-  text-transform:uppercase;
-  box-shadow:0 0 20px rgba(255,195,0,.15);
-  transition:all .25s ease;
+  position:fixed;bottom:14px;left:50%;transform:translateX(-50%);z-index:100;pointer-events:all;
+  display:flex;align-items:center;gap:.6rem;background:rgba(5,12,28,.95);border:1px solid var(--accent3);
+  padding:.55rem 1.2rem;clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,10px 100%,0 calc(100% - 10px));
+  cursor:pointer;font-family:'Orbitron',monospace;font-size:.6rem;font-weight:700;letter-spacing:.2em;
+  color:var(--accent3);text-transform:uppercase;box-shadow:0 0 20px rgba(255,195,0,.15);transition:all .25s ease;
 }
-#grantLocBtn:hover{
-  background:rgba(255,195,0,.08);
-  box-shadow:0 0 28px rgba(255,195,0,.3);
-  border-color:#ffe066;color:#ffe066;
-}
-#grantLocBtn .btn-icon{
-  width:8px;height:8px;border-radius:50%;
-  background:var(--accent3);
-  box-shadow:0 0 8px var(--accent3);
-  animation:blink 1.2s infinite;
-}
-#grantLocBtn.hidden{
-  opacity:0;pointer-events:none;transform:translateX(-50%) translateY(20px);
-  transition:opacity .4s ease,transform .4s ease;
-}
+#grantLocBtn:hover{background:rgba(255,195,0,.08);box-shadow:0 0 28px rgba(255,195,0,.3);border-color:#ffe066;color:#ffe066;}
+.btn-pulse{width:8px;height:8px;border-radius:50%;background:var(--accent3);box-shadow:0 0 8px var(--accent3);animation:blink 1.2s infinite;flex-shrink:0;}
+#grantLocBtn.hidden{opacity:0;pointer-events:none;transform:translateX(-50%) translateY(20px);}
 
-/* Source badge in loc panel */
-#locSource{
-  font-family:'Orbitron',monospace;font-size:.42rem;letter-spacing:.15em;
-  padding:.1rem .35rem;border-radius:2px;
-  background:rgba(0,255,231,.07);border:1px solid var(--dim);
-  color:var(--dim);
+/* ── FLOAT CONTROLS (hamburger + settings) ── */
+#floatControls{position:fixed;top:8px;right:14px;z-index:200;display:flex;flex-direction:column;gap:4px;pointer-events:all;}
+.float-btn{
+  width:38px;height:38px;background:rgba(5,12,28,.92);border:1px solid var(--border);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;
+  cursor:pointer;transition:all .2s;
+  clip-path:polygon(0 0,calc(100% - 6px) 0,100% 6px,100% 100%,0 100%);
 }
-#locSource.gps{color:var(--accent);border-color:var(--accent);background:rgba(0,255,231,.1)}
-#locSource.ip{color:var(--accent3);border-color:var(--accent3);background:rgba(255,195,0,.08)}
+.float-btn:hover{background:rgba(0,255,231,.08);border-color:var(--accent);}
+.float-btn.active{background:rgba(0,255,231,.12);border-color:var(--accent);}
+.hb-line{width:18px;height:2px;background:var(--accent);transition:all .3s;}
+#hamburgerBtn.active .hb-line:nth-child(1){transform:translateY(6px) rotate(45deg);}
+#hamburgerBtn.active .hb-line:nth-child(2){opacity:0;transform:scaleX(0);}
+#hamburgerBtn.active .hb-line:nth-child(3){transform:translateY(-6px) rotate(-45deg);}
+.settings-icon{font-size:16px;line-height:1;color:var(--accent);transition:transform .5s;}
+#settingsBtn.active .settings-icon{transform:rotate(120deg);color:var(--accent3);}
+
+/* ── SETTINGS PANEL ── */
+#settingsPanel{
+  position:fixed;top:8px;right:58px;z-index:190;width:285px;
+  background:var(--panel);border:1px solid var(--border);
+  clip-path:polygon(0 0,calc(100% - 12px) 0,100% 12px,100% 100%,0 100%);
+  backdrop-filter:blur(14px);pointer-events:none;
+  transform-origin:top right;transform:scale(.9) translateX(10px);
+  opacity:0;transition:opacity .22s ease,transform .22s ease;
+}
+#settingsPanel.open{opacity:1;transform:scale(1) translateX(0);pointer-events:all;}
+.sp-header{
+  padding:.7rem 1rem;border-bottom:1px solid var(--border);
+  font-family:'Orbitron',monospace;font-size:.55rem;font-weight:900;
+  letter-spacing:.4em;color:var(--accent);display:flex;align-items:center;gap:.5rem;
+}
+.sp-dot{width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 6px var(--accent);flex-shrink:0;}
+.sp-section{padding:.7rem 1rem;border-bottom:1px solid var(--border);}
+.sp-section:last-child{border-bottom:none;}
+.sp-label{font-family:'Orbitron',monospace;font-size:.42rem;letter-spacing:.25em;color:var(--dim);text-transform:uppercase;margin-bottom:.55rem;}
+.sp-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:.4rem;}
+.sp-row:last-child{margin-bottom:0}
+.sp-row-label{font-family:'Rajdhani',sans-serif;font-size:.78rem;color:var(--text);letter-spacing:.04em;}
+
+/* Rotation toggle group */
+.rot-group{display:flex;gap:3px;width:100%;}
+.rot-btn{
+  flex:1;font-family:'Orbitron',monospace;font-size:.38rem;letter-spacing:.1em;
+  padding:.32rem .3rem;border:1px solid var(--dim);background:transparent;color:var(--dim);
+  cursor:pointer;transition:all .18s;text-align:center;
+  clip-path:polygon(0 0,calc(100% - 4px) 0,100% 4px,100% 100%,0 100%);
+}
+.rot-btn:hover{border-color:var(--text);color:var(--text);}
+.rot-btn.on{border-color:var(--accent);background:rgba(0,255,231,.1);color:var(--accent);box-shadow:0 0 6px rgba(0,255,231,.15);}
+.rot-btn.stop-on{border-color:var(--accent2);background:rgba(255,45,107,.08);color:var(--accent2);box-shadow:0 0 6px rgba(255,45,107,.15);}
+
+/* ON/OFF switch */
+.sw-pair{display:flex;gap:3px;}
+.sw-btn{
+  font-family:'Orbitron',monospace;font-size:.4rem;letter-spacing:.15em;
+  padding:.28rem .55rem;border:1px solid var(--dim);background:transparent;color:var(--dim);cursor:pointer;transition:all .18s;
+}
+.sw-btn:hover{border-color:var(--text);color:var(--text);}
+.sw-on.sw-active{border-color:var(--accent);background:rgba(0,255,231,.1);color:var(--accent);}
+.sw-off.sw-active{border-color:var(--accent2);background:rgba(255,45,107,.08);color:var(--accent2);}
 </style>
 </head>
 <body>
@@ -196,32 +178,24 @@ body::after{
   <div class="load-msg" id="loadMsg">Initialising renderer...</div>
 </div>
 
-<!-- THREE.JS CANVAS -->
 <canvas id="c"></canvas>
 
-<!-- HUD OVERLAY -->
+<!-- HUD -->
 <div id="hud">
   <div class="hdr">
-    <div>
-      <div class="hdr-name"><span>Aayan</span> Globe</div>
-      <div class="hdr-ver">VERSION 1.0 — DOT FIELD ENGINE</div>
-    </div>
+    <div><div class="hdr-name"><span>Aayan</span> Globe</div><div class="hdr-ver">VERSION 1.0 — DOT FIELD ENGINE</div></div>
     <div class="hdr-center"><div class="live-dot"></div>LIVE TRACKING</div>
     <div class="hdr-time" id="clock">--:--:--</div>
   </div>
-
   <div class="bracket tl"></div><div class="bracket tr"></div>
   <div class="bracket bl"></div><div class="bracket br"></div>
 
-  <!-- LOD panel -->
   <div class="panel" id="lodPanel">
     <div class="panel-title">Render Density</div>
-    <div id="zoomVal">--</div>
-    <div id="lodLabel">MED</div>
+    <div id="zoomVal">--</div><div id="lodLabel">MED</div>
     <div class="lod-bar-outer"><div class="lod-bar-inner" id="lodBar" style="width:50%"></div></div>
   </div>
 
-  <!-- Controls -->
   <div class="panel" id="ctrlPanel">
     <div class="panel-title">Controls</div>
     <div class="ctrl-row"><span class="ctrl-key">DRAG</span>Rotate globe</div>
@@ -229,7 +203,6 @@ body::after{
     <div class="ctrl-row"><span class="ctrl-key">TOUCH</span>Pinch to zoom</div>
   </div>
 
-  <!-- Globe stats -->
   <div class="panel" id="statsPanel">
     <div class="panel-title">Globe Stats</div>
     <div class="stat-row"><span class="stat-label">Dots</span><span class="stat-val" id="dotCount">--</span></div>
@@ -238,16 +211,9 @@ body::after{
     <div class="stat-row"><span class="stat-label">FPS</span><span class="stat-val" id="fpsVal">--</span></div>
   </div>
 
-  <!-- Location -->
   <div class="panel" id="locPanel">
-    <div class="panel-title" style="display:flex;justify-content:space-between;align-items:center">
-      <span>Your Location</span>
-      <span id="locSource">IP</span>
-    </div>
-    <div class="loc-row">
-      <span class="loc-key">IP</span>
-      <span class="loc-val" id="locIP" style="color:var(--accent);font-size:.65rem;letter-spacing:.05em">Scanning...</span>
-    </div>
+    <div class="panel-title"><span>Your Location</span><span id="locSource">IP</span></div>
+    <div class="loc-row"><span class="loc-key">IP</span><span class="loc-val" id="locIP" style="color:var(--accent);font-size:.65rem">Scanning...</span></div>
     <div class="loc-row"><span class="loc-key">ISP</span><span class="loc-val" id="locISP">--</span></div>
     <div class="loc-row" style="border-top:1px solid var(--border);padding-top:.35rem;margin-top:.1rem">
       <span class="loc-key">City</span><span class="loc-val" id="locCity">--</span>
@@ -260,10 +226,67 @@ body::after{
   </div>
 </div>
 
-<!-- Toast container -->
+<!-- ALWAYS-VISIBLE: Hamburger + Settings buttons -->
+<div id="floatControls">
+  <button class="float-btn" id="hamburgerBtn" title="Toggle HUD panels">
+    <span class="hb-line"></span>
+    <span class="hb-line"></span>
+    <span class="hb-line"></span>
+  </button>
+  <button class="float-btn" id="settingsBtn" title="Settings">
+    <span class="settings-icon">⚙</span>
+  </button>
+</div>
+
+<!-- SETTINGS PANEL -->
+<div id="settingsPanel">
+  <div class="sp-header"><div class="sp-dot"></div>SETTINGS</div>
+
+  <!-- Rotation -->
+  <div class="sp-section">
+    <div class="sp-label">Rotation Direction</div>
+    <div class="rot-group">
+      <button class="rot-btn" id="rotEW"   onclick="setRotation('east-west')">◀ EAST→WEST</button>
+      <button class="rot-btn on" id="rotWE" onclick="setRotation('west-east')">WEST→EAST ▶</button>
+      <button class="rot-btn" id="rotStop" onclick="setRotation('stopped')">■ STOP</button>
+    </div>
+  </div>
+
+  <!-- Sun & Moon -->
+  <div class="sp-section">
+    <div class="sp-row">
+      <span class="sp-row-label">☀&thinsp; Sun</span>
+      <div class="sw-pair">
+        <button class="sw-btn sw-on sw-active" id="sunOn"  onclick="setSun(true)">ENABLE</button>
+        <button class="sw-btn sw-off"           id="sunOff" onclick="setSun(false)">DISABLE</button>
+      </div>
+    </div>
+    <div class="sp-row">
+      <span class="sp-row-label">🌙&thinsp; Moon</span>
+      <div class="sw-pair">
+        <button class="sw-btn sw-on"             id="moonOn"  onclick="setMoon(true)">ENABLE</button>
+        <button class="sw-btn sw-off sw-active"  id="moonOff" onclick="setMoon(false)">DISABLE</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Background Affection -->
+  <div class="sp-section">
+    <div class="sp-label">Background Drag Effect</div>
+    <div class="sp-row" style="margin-bottom:0">
+      <span class="sp-row-label" style="font-size:.65rem;color:var(--dim);max-width:130px;line-height:1.4">Stars move with<br>globe when dragged</span>
+      <div class="sw-pair">
+        <button class="sw-btn sw-on sw-active" id="bgOn"  onclick="setBgAffection(true)">ENABLE</button>
+        <button class="sw-btn sw-off"           id="bgOff" onclick="setBgAffection(false)">DISABLE</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
 <div id="errorToast"></div>
 
-<!-- Floating 3D label -->
+<!-- Floating label -->
 <div id="locationLabel">
   <div class="loc-label-box">
     <div class="loc-label-name" id="locLabelName">--</div>
@@ -272,40 +295,110 @@ body::after{
   <div class="loc-label-line"></div>
 </div>
 
-<!-- Grant Location Permission Button (bottom center) -->
-<button id="grantLocBtn" class="hidden" title="Click to share your precise GPS location">
-  <div class="btn-icon"></div>
+<!-- Grant Location -->
+<button id="grantLocBtn" class="hidden">
+  <div class="btn-pulse"></div>
   Grant Location Permission
 </button>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/topojson-client@3/dist/topojson-client.min.js"></script>
 <script>
-// ═══════════════════════════════════════════════
-// AAYAN GLOBE v1.0
-// ═══════════════════════════════════════════════
-
-const R   = 200;   // globe radius
-let scene, camera, renderer, globeGroup;
-let dotMeshes = {};          // {low, med, high}
-let currentLOD = 'med';
+const R = 200;
+let scene, camera, renderer, globeGroup, starsGroup;
+let dotMeshes = {}, currentLOD = 'med';
 let borderLines, locationObj;
 let isDragging = false, prevMouse = {x:0,y:0};
-let rotVel = {x:0, y:0};
+let rotVel = {x:0,y:0};
 let camDist = 580;
 let frameTimes = [];
-let userLat = null, userLng = null;
-let geoPermissionState = 'prompt'; // 'prompt' | 'granted' | 'denied'
+let geoPermissionState = 'prompt';
 
-// ── Load helpers ──────────────────────────────
-function setLoad(pct, msg){
-  document.getElementById('loadBar').style.width = pct+'%';
-  document.getElementById('loadPct').textContent = pct+'%';
+// Three.js objects
+let ambientLight, sunLight, sunMesh, nightSphere, moonMesh;
+let moonAngle = 0;
+
+// Settings state
+let rotationDir  = 'west-east';
+let sunEnabled   = true;
+let moonEnabled  = false;
+let bgAffection  = true;
+let hudVisible   = true;
+let settingsOpen = false;
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// SETTINGS ACTIONS
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+function setRotation(dir) {
+  rotationDir = dir;
+  document.getElementById('rotEW').className   = 'rot-btn' + (dir==='east-west' ? ' on'     : '');
+  document.getElementById('rotWE').className   = 'rot-btn' + (dir==='west-east' ? ' on'     : '');
+  document.getElementById('rotStop').className = 'rot-btn' + (dir==='stopped'   ? ' stop-on': '');
+}
+
+function setSun(val) {
+  sunEnabled = val;
+  document.getElementById('sunOn').className  = 'sw-btn sw-on'  + (val  ? ' sw-active' : '');
+  document.getElementById('sunOff').className = 'sw-btn sw-off' + (!val ? ' sw-active' : '');
+  if (sunLight)    sunLight.visible    = val;
+  if (sunMesh)     sunMesh.visible     = val;
+  if (nightSphere) nightSphere.visible = val;
+  if (ambientLight) ambientLight.intensity = val ? 0.15 : 1.0;
+}
+
+function setMoon(val) {
+  moonEnabled = val;
+  document.getElementById('moonOn').className  = 'sw-btn sw-on'  + (val  ? ' sw-active' : '');
+  document.getElementById('moonOff').className = 'sw-btn sw-off' + (!val ? ' sw-active' : '');
+  if (moonMesh) moonMesh.visible = val;
+}
+
+function setBgAffection(val) {
+  bgAffection = val;
+  document.getElementById('bgOn').className  = 'sw-btn sw-on'  + (val  ? ' sw-active' : '');
+  document.getElementById('bgOff').className = 'sw-btn sw-off' + (!val ? ' sw-active' : '');
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// HAMBURGER
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+document.getElementById('hamburgerBtn').addEventListener('click', () => {
+  hudVisible = !hudVisible;
+  const hud = document.getElementById('hud');
+  document.getElementById('hamburgerBtn').classList.toggle('active', !hudVisible);
+  hud.classList.toggle('hud-hidden', !hudVisible);
+});
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// SETTINGS PANEL TOGGLE
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+document.getElementById('settingsBtn').addEventListener('click', e => {
+  e.stopPropagation();
+  settingsOpen = !settingsOpen;
+  document.getElementById('settingsBtn').classList.toggle('active', settingsOpen);
+  document.getElementById('settingsPanel').classList.toggle('open', settingsOpen);
+});
+document.addEventListener('click', e => {
+  if (!settingsOpen) return;
+  const sp = document.getElementById('settingsPanel');
+  const sb = document.getElementById('settingsBtn');
+  if (!sp.contains(e.target) && !sb.contains(e.target)) {
+    settingsOpen = false;
+    sb.classList.remove('active');
+    sp.classList.remove('open');
+  }
+});
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// HELPERS
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+function setLoad(pct, msg) {
+  document.getElementById('loadBar').style.width = pct + '%';
+  document.getElementById('loadPct').textContent = pct + '%';
   document.getElementById('loadMsg').textContent = msg;
 }
 
-// ── Coordinate converter ──────────────────────
-function ll2xyz(lat, lng, r){
+function ll2xyz(lat, lng, r) {
   const phi   = (90 - lat) * Math.PI / 180;
   const theta = (lng + 180) * Math.PI / 180;
   return new THREE.Vector3(
@@ -315,8 +408,7 @@ function ll2xyz(lat, lng, r){
   );
 }
 
-// ── Glow dot texture ─────────────────────────
-function makeDotTex(){
+function makeDotTex() {
   const s = 64, c = document.createElement('canvas');
   c.width = c.height = s;
   const ctx = c.getContext('2d');
@@ -330,31 +422,34 @@ function makeDotTex(){
   return new THREE.CanvasTexture(c);
 }
 
-// ── Stars ─────────────────────────────────────
-function makeStars(){
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// SCENE BUILDERS
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+function makeStars() {
+  starsGroup = new THREE.Group();
   const n = 4000;
   const pos = new Float32Array(n*3), col = new Float32Array(n*3);
-  for(let i=0;i<n;i++){
-    const theta = Math.random()*Math.PI*2;
-    const phi   = Math.acos(2*Math.random()-1);
-    const r     = 1800 + Math.random()*600;
-    pos[i*3]   = r*Math.sin(phi)*Math.cos(theta);
-    pos[i*3+1] = r*Math.cos(phi);
-    pos[i*3+2] = r*Math.sin(phi)*Math.sin(theta);
-    const b = 0.3 + Math.random()*0.7;
+  for (let i = 0; i < n; i++) {
+    const theta = Math.random() * Math.PI * 2;
+    const phi   = Math.acos(2 * Math.random() - 1);
+    const r     = 1800 + Math.random() * 600;
+    pos[i*3]   = r * Math.sin(phi) * Math.cos(theta);
+    pos[i*3+1] = r * Math.cos(phi);
+    pos[i*3+2] = r * Math.sin(phi) * Math.sin(theta);
+    const b = 0.3 + Math.random() * 0.7;
     col[i*3] = b*0.85; col[i*3+1] = b*0.9; col[i*3+2] = b;
   }
   const geo = new THREE.BufferGeometry();
-  geo.setAttribute('position', new THREE.BufferAttribute(pos,3));
-  geo.setAttribute('color',    new THREE.BufferAttribute(col,3));
-  scene.add(new THREE.Points(geo, new THREE.PointsMaterial({
+  geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+  geo.setAttribute('color',    new THREE.BufferAttribute(col, 3));
+  starsGroup.add(new THREE.Points(geo, new THREE.PointsMaterial({
     size:1.4, vertexColors:true, transparent:true, opacity:0.85
   })));
+  scene.add(starsGroup);
 }
 
-// ── Atmosphere ───────────────────────────────
-function makeAtmosphere(){
-  [[R*1.04,0x0044cc,0.07],[R*1.12,0x0022aa,0.03],[R*1.25,0x001155,0.015]].forEach(([r,c,o])=>{
+function makeAtmosphere() {
+  [[R*1.04,0x0044cc,0.07],[R*1.12,0x0022aa,0.03],[R*1.25,0x001155,0.015]].forEach(([r,c,o]) => {
     globeGroup.add(new THREE.Mesh(
       new THREE.SphereGeometry(r,64,64),
       new THREE.MeshBasicMaterial({color:c,transparent:true,opacity:o,side:THREE.BackSide})
@@ -362,529 +457,470 @@ function makeAtmosphere(){
   });
 }
 
-// ── Build dot cloud ───────────────────────────
-function buildDots(resolution, isLand, tex){
-  const landC  = new THREE.Color(0x00ffe7);
-  const waterC = new THREE.Color(0x0033bb);
-  const pos=[], col=[];
-  let count = 0;
+function makeSun() {
+  const SUN_POS = new THREE.Vector3(2200, 600, 1000);
 
-  for(let lat=-90;lat<=90;lat+=resolution){
-    for(let lng=-180;lng<180;lng+=resolution){
-      const land = isLand(lat,lng);
-      const v = ll2xyz(lat,lng,R);
-      pos.push(v.x,v.y,v.z);
-      const c = land ? landC : waterC;
-      col.push(c.r,c.g,c.b);
-      count++;
-    }
-  }
+  // Ambient (dim baseline so night side isn't absolute black)
+  ambientLight = new THREE.AmbientLight(0x112244, 0.15);
+  scene.add(ambientLight);
 
-  const geo = new THREE.BufferGeometry();
-  geo.setAttribute('position', new THREE.BufferAttribute(new Float32Array(pos),3));
-  geo.setAttribute('color',    new THREE.BufferAttribute(new Float32Array(col),3));
+  // Directional sun light
+  sunLight = new THREE.DirectionalLight(0xfff8e7, 1.8);
+  sunLight.position.copy(SUN_POS);
+  sunLight.target.position.set(0, 0, 0);
+  scene.add(sunLight);
+  scene.add(sunLight.target);
 
-  const dotSize = {3.0:4.5, 2.0:3.2, 1.2:2.0}[resolution] || 3.2;
+  // Sun visual group
+  sunMesh = new THREE.Group();
 
-  const mat = new THREE.PointsMaterial({
-    size: dotSize,
-    map: tex,
-    vertexColors: true,
-    transparent: true,
-    opacity: 0.95,
-    blending: THREE.AdditiveBlending,
-    depthWrite: false,
-    sizeAttenuation: true,
+  // Core sphere
+  const core = new THREE.Mesh(
+    new THREE.SphereGeometry(55, 32, 32),
+    new THREE.MeshBasicMaterial({ color: 0xfffde7 })
+  );
+  sunMesh.add(core);
+
+  // Glow corona layers (additive, BackSide)
+  [
+    { r: 110, c: 0xfffde0, o: 0.18 },
+    { r: 200, c: 0xffe090, o: 0.09 },
+    { r: 340, c: 0xffcc44, o: 0.045 },
+    { r: 550, c: 0xff9900, o: 0.02  },
+  ].forEach(({ r, c, o }) => {
+    sunMesh.add(new THREE.Mesh(
+      new THREE.SphereGeometry(r, 32, 32),
+      new THREE.MeshBasicMaterial({
+        color: c, transparent: true, opacity: o,
+        blending: THREE.AdditiveBlending, depthWrite: false, side: THREE.BackSide
+      })
+    ));
   });
-  return { mesh: new THREE.Points(geo, mat), count };
+
+  sunMesh.position.copy(SUN_POS);
+  scene.add(sunMesh);
+
+  // Night-shadow sphere over globe using MultiplyBlending
+  // Lambert material: lit side ≈ white (multiply=1 → no effect)
+  //                   dark side ≈ black (multiply=0 → darkness)
+  nightSphere = new THREE.Mesh(
+    new THREE.SphereGeometry(R + 1, 64, 64),
+    new THREE.MeshLambertMaterial({
+      color: 0xffffff,
+      transparent: true,
+      blending: THREE.MultiplyBlending,
+      depthWrite: false,
+      side: THREE.FrontSide
+    })
+  );
+  nightSphere.renderOrder = 2;
+  globeGroup.add(nightSphere);
+
+  // Apply initial enabled state
+  setSun(sunEnabled);
 }
 
-// ── Build country borders ─────────────────────
-function buildBorders(mesh){
-  const pos = [];
-  const lines = mesh.type==='MultiLineString' ? mesh.coordinates
-              : mesh.type==='LineString'      ? [mesh.coordinates]
-              : [];
-  let segs = 0;
-  for(const line of lines){
-    for(let i=0;i<line.length-1;i++){
-      const [l1,a1]=line[i], [l2,a2]=line[i+1];
-      const p1=ll2xyz(a1,l1,R+0.8), p2=ll2xyz(a2,l2,R+0.8);
-      pos.push(p1.x,p1.y,p1.z, p2.x,p2.y,p2.z);
-      segs++;
+function makeMoon() {
+  moonMesh = new THREE.Group();
+
+  // Moon body (needs Lambert for sun lighting)
+  const body = new THREE.Mesh(
+    new THREE.SphereGeometry(18, 32, 32),
+    new THREE.MeshLambertMaterial({ color: 0x9999aa })
+  );
+  moonMesh.add(body);
+
+  // Faint glow
+  moonMesh.add(new THREE.Mesh(
+    new THREE.SphereGeometry(32, 16, 16),
+    new THREE.MeshBasicMaterial({
+      color: 0xaabbcc, transparent: true, opacity: 0.05,
+      blending: THREE.AdditiveBlending, depthWrite: false, side: THREE.BackSide
+    })
+  ));
+
+  moonMesh.visible = moonEnabled;
+  scene.add(moonMesh);
+}
+
+function buildDots(resolution, isLand, tex) {
+  const landC = new THREE.Color(0x00ffe7), waterC = new THREE.Color(0x0033bb);
+  const pos = [], col = []; let count = 0;
+  for (let lat = -90; lat <= 90; lat += resolution) {
+    for (let lng = -180; lng < 180; lng += resolution) {
+      const v = ll2xyz(lat, lng, R);
+      pos.push(v.x, v.y, v.z);
+      const c = isLand(lat, lng) ? landC : waterC;
+      col.push(c.r, c.g, c.b); count++;
     }
   }
   const geo = new THREE.BufferGeometry();
-  geo.setAttribute('position', new THREE.BufferAttribute(new Float32Array(pos),3));
+  geo.setAttribute('position', new THREE.BufferAttribute(new Float32Array(pos), 3));
+  geo.setAttribute('color',    new THREE.BufferAttribute(new Float32Array(col), 3));
+  const dotSize = { 3.0: 4.5, 2.0: 3.2, 1.2: 2.0 }[resolution] || 3.2;
+  return {
+    mesh: new THREE.Points(geo, new THREE.PointsMaterial({
+      size: dotSize, map: tex, vertexColors: true, transparent: true, opacity: 0.95,
+      blending: THREE.AdditiveBlending, depthWrite: false, sizeAttenuation: true
+    })),
+    count
+  };
+}
+
+function buildBorders(mesh) {
+  const pos = [];
+  const lines = mesh.type === 'MultiLineString' ? mesh.coordinates
+              : mesh.type === 'LineString'      ? [mesh.coordinates] : [];
+  let segs = 0;
+  for (const line of lines) {
+    for (let i = 0; i < line.length - 1; i++) {
+      const [l1,a1] = line[i], [l2,a2] = line[i+1];
+      const p1 = ll2xyz(a1,l1,R+0.8), p2 = ll2xyz(a2,l2,R+0.8);
+      pos.push(p1.x,p1.y,p1.z, p2.x,p2.y,p2.z); segs++;
+    }
+  }
+  const geo = new THREE.BufferGeometry();
+  geo.setAttribute('position', new THREE.BufferAttribute(new Float32Array(pos), 3));
   borderLines = new THREE.LineSegments(geo, new THREE.LineBasicMaterial({
-    color:0x00ffe7, transparent:true, opacity:0.32
+    color: 0x00ffe7, transparent: true, opacity: 0.32
   }));
   globeGroup.add(borderLines);
   document.getElementById('borderCount').textContent = segs.toLocaleString();
 }
 
-// ── Location marker ───────────────────────────
-function buildLocationMarker(lat, lng, city, country, source){
-  // Remove old marker if exists
-  if(locationObj){
-    globeGroup.remove(locationObj.group);
-    locationObj = null;
-  }
-
-  const markerColor = source === 'gps' ? 0x00ffe7 : 0xffc300;
-  const pos = ll2xyz(lat, lng, R+2);
+function buildLocationMarker(lat, lng, city, country, source) {
+  if (locationObj) { globeGroup.remove(locationObj.group); locationObj = null; }
+  const mc = source === 'gps' ? 0x00ffe7 : 0xffc300;
+  const pos = ll2xyz(lat, lng, R + 2);
   const group = new THREE.Group();
-
-  // Core dot
-  const core = new THREE.Mesh(
-    new THREE.SphereGeometry(3.5,16,16),
-    new THREE.MeshBasicMaterial({color:markerColor})
-  );
-  group.add(core);
-
-  // Inner ring
-  const ring1 = new THREE.Mesh(
-    new THREE.RingGeometry(5.5,7,48),
-    new THREE.MeshBasicMaterial({color:markerColor,transparent:true,opacity:0.8,side:THREE.DoubleSide})
-  );
-  const ring2 = new THREE.Mesh(
-    new THREE.RingGeometry(10,11.5,48),
-    new THREE.MeshBasicMaterial({color:markerColor,transparent:true,opacity:0.4,side:THREE.DoubleSide})
-  );
+  group.add(new THREE.Mesh(new THREE.SphereGeometry(3.5,16,16), new THREE.MeshBasicMaterial({color:mc})));
+  const ring1 = new THREE.Mesh(new THREE.RingGeometry(5.5,7,48),   new THREE.MeshBasicMaterial({color:mc,transparent:true,opacity:0.8,side:THREE.DoubleSide}));
+  const ring2 = new THREE.Mesh(new THREE.RingGeometry(10,11.5,48), new THREE.MeshBasicMaterial({color:mc,transparent:true,opacity:0.4,side:THREE.DoubleSide}));
   group.add(ring1); group.add(ring2);
-
-  // Orient rings tangent to globe surface
-  const normal = pos.clone().normalize();
-  const q = new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0,0,1), normal);
-  ring1.quaternion.copy(q);
-  ring2.quaternion.copy(q);
-
+  const q = new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0,0,1), pos.clone().normalize());
+  ring1.quaternion.copy(q); ring2.quaternion.copy(q);
   group.position.copy(pos);
   globeGroup.add(group);
+  locationObj = { group, ring1, ring2, lat, lng };
 
-  locationObj = { group, ring1, ring2, lat, lng, city, country };
-
-  // Update side panels
   document.getElementById('locCity').textContent    = city    || '--';
   document.getElementById('locCountry').textContent = country || '--';
-  document.getElementById('locLat').textContent     = lat.toFixed(4)+'°';
-  document.getElementById('locLng').textContent     = lng.toFixed(4)+'°';
+  document.getElementById('locLat').textContent     = lat.toFixed(4) + '°';
+  document.getElementById('locLng').textContent     = lng.toFixed(4) + '°';
   document.getElementById('locLabelName').textContent = city || 'Your Location';
-  document.getElementById('locLabelSub').textContent = `${lat.toFixed(2)}° · ${lng.toFixed(2)}°`;
+  document.getElementById('locLabelSub').textContent  = `${lat.toFixed(2)}° · ${lng.toFixed(2)}°`;
 
-  // Update source badge
   const badge = document.getElementById('locSource');
-  if(source === 'gps'){
-    badge.textContent = '⬤ GPS';
-    badge.className = 'gps';
+  if (source === 'gps') {
+    badge.textContent = '⬤ GPS'; badge.className = 'gps';
     document.getElementById('locStatusText').textContent = 'GPS LOCKED';
   } else {
-    badge.textContent = '⬤ IP';
-    badge.className = 'ip';
+    badge.textContent = '⬤ IP'; badge.className = 'ip';
     document.getElementById('locStatusText').textContent = 'IP LOCATED';
   }
-
-  // Spin globe to show location
-  globeGroup.rotation.y = -(lng+180)*Math.PI/180+Math.PI;
-  globeGroup.rotation.x = -lat*Math.PI/180*0.5;
+  globeGroup.rotation.y = -(lng + 180) * Math.PI / 180 + Math.PI;
+  globeGroup.rotation.x = -lat * Math.PI / 180 * 0.5;
 }
 
-// ── Update floating label position ───────────
-function updateLabel(){
-  if(!locationObj) return;
+function updateLabel() {
+  if (!locationObj) return;
   const el = document.getElementById('locationLabel');
   const pos3 = locationObj.group.position.clone();
-
   globeGroup.updateMatrixWorld();
   pos3.applyMatrix4(globeGroup.matrixWorld);
-
-  // Check if marker is on the facing hemisphere
-  const invMat = new THREE.Matrix4().copy(globeGroup.matrixWorld).invert();
-  const camLocal = camera.position.clone().applyMatrix4(invMat).normalize();
-  const markerLocal = locationObj.group.position.clone().normalize();
-  const facing = markerLocal.dot(camLocal) > 0.05;
-
-  if(!facing){ el.style.opacity='0'; return; }
-
+  const invMat    = new THREE.Matrix4().copy(globeGroup.matrixWorld).invert();
+  const camLocal  = camera.position.clone().applyMatrix4(invMat).normalize();
+  const mrkLocal  = locationObj.group.position.clone().normalize();
+  if (mrkLocal.dot(camLocal) <= 0.05) { el.style.opacity = '0'; return; }
   const proj = pos3.clone().project(camera);
-  if(proj.z > 1){ el.style.opacity='0'; return; }
-
-  const x = (proj.x*0.5+0.5)*window.innerWidth;
-  const y = (-proj.y*0.5+0.5)*window.innerHeight;
-  el.style.left  = x+'px';
-  el.style.top   = y+'px';
+  if (proj.z > 1) { el.style.opacity = '0'; return; }
+  el.style.left    = (proj.x*0.5+0.5) * window.innerWidth  + 'px';
+  el.style.top     = (-proj.y*0.5+0.5) * window.innerHeight + 'px';
   el.style.opacity = '1';
 }
 
-// ── LOD switching ─────────────────────────────
-function updateLOD(){
-  let target;
-  if     (camDist < 360) target='high';
-  else if(camDist < 650) target='med';
-  else                   target='low';
-
-  if(target!==currentLOD && dotMeshes[target]){
-    dotMeshes[currentLOD].visible=false;
-    dotMeshes[target].visible=true;
-    currentLOD=target;
+function updateLOD() {
+  const target = camDist < 360 ? 'high' : camDist < 650 ? 'med' : 'low';
+  if (target !== currentLOD && dotMeshes[target]) {
+    dotMeshes[currentLOD].visible = false;
+    dotMeshes[target].visible = true;
+    currentLOD = target;
     document.getElementById('lodLabel').textContent = target.toUpperCase();
-    const pct={low:25,med:55,high:90}[target];
-    document.getElementById('lodBar').style.width=pct+'%';
+    document.getElementById('lodBar').style.width = {low:25,med:55,high:90}[target] + '%';
     document.getElementById('dotCount').textContent = dotMeshes[target].geometry.attributes.position.count.toLocaleString();
   }
   document.getElementById('zoomVal').textContent = Math.round(camDist);
 }
 
-// ── Event handlers ────────────────────────────
-function setupEvents(){
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// EVENTS
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+function setupEvents() {
   const c = renderer.domElement;
 
-  c.addEventListener('mousedown', e=>{
-    isDragging=true; rotVel={x:0,y:0};
-    prevMouse={x:e.clientX,y:e.clientY};
+  c.addEventListener('mousedown', e => {
+    isDragging = true; rotVel = {x:0,y:0};
+    prevMouse = {x:e.clientX, y:e.clientY};
   });
-  c.addEventListener('mousemove', e=>{
-    if(!isDragging) return;
-    const dx=e.clientX-prevMouse.x, dy=e.clientY-prevMouse.y;
-    globeGroup.rotation.y += dx*0.005;
-    globeGroup.rotation.x += dy*0.003;
+  c.addEventListener('mousemove', e => {
+    if (!isDragging) return;
+    const dx = e.clientX - prevMouse.x, dy = e.clientY - prevMouse.y;
+    globeGroup.rotation.y += dx * 0.005;
+    globeGroup.rotation.x += dy * 0.003;
     globeGroup.rotation.x = Math.max(-Math.PI*0.5, Math.min(Math.PI*0.5, globeGroup.rotation.x));
-    rotVel={x:dy*0.003, y:dx*0.005};
-    prevMouse={x:e.clientX,y:e.clientY};
+    rotVel = {x:dy*0.003, y:dx*0.005};
+    prevMouse = {x:e.clientX, y:e.clientY};
   });
-  c.addEventListener('mouseup',  ()=>isDragging=false);
-  c.addEventListener('mouseleave',()=>isDragging=false);
-
-  c.addEventListener('wheel', e=>{
+  c.addEventListener('mouseup',    () => isDragging = false);
+  c.addEventListener('mouseleave', () => isDragging = false);
+  c.addEventListener('wheel', e => {
     e.preventDefault();
-    camDist = Math.max(260, Math.min(1100, camDist+e.deltaY*0.4));
-    camera.position.z = camDist;
-    updateLOD();
-  },{passive:false});
+    camDist = Math.max(260, Math.min(1100, camDist + e.deltaY * 0.4));
+    camera.position.z = camDist; updateLOD();
+  }, {passive:false});
 
-  let touchPrev={x:0,y:0};
-  let pinchStart=0;
-  c.addEventListener('touchstart', e=>{
-    if(e.touches.length===1){ isDragging=true; touchPrev={x:e.touches[0].clientX,y:e.touches[0].clientY}; }
-    else if(e.touches.length===2){
-      const dx=e.touches[0].clientX-e.touches[1].clientX;
-      const dy=e.touches[0].clientY-e.touches[1].clientY;
-      pinchStart=Math.sqrt(dx*dx+dy*dy);
+  let touchPrev = {x:0,y:0}, pinchStart = 0;
+  c.addEventListener('touchstart', e => {
+    if (e.touches.length === 1) { isDragging = true; touchPrev = {x:e.touches[0].clientX,y:e.touches[0].clientY}; }
+    else if (e.touches.length === 2) {
+      const dx = e.touches[0].clientX-e.touches[1].clientX, dy = e.touches[0].clientY-e.touches[1].clientY;
+      pinchStart = Math.sqrt(dx*dx+dy*dy);
     }
   });
-  c.addEventListener('touchmove', e=>{
+  c.addEventListener('touchmove', e => {
     e.preventDefault();
-    if(e.touches.length===1 && isDragging){
-      const dx=e.touches[0].clientX-touchPrev.x, dy=e.touches[0].clientY-touchPrev.y;
-      globeGroup.rotation.y += dx*0.005;
-      globeGroup.rotation.x += dy*0.003;
+    if (e.touches.length === 1 && isDragging) {
+      const dx = e.touches[0].clientX-touchPrev.x, dy = e.touches[0].clientY-touchPrev.y;
+      globeGroup.rotation.y += dx*0.005; globeGroup.rotation.x += dy*0.003;
       globeGroup.rotation.x = Math.max(-Math.PI*0.5,Math.min(Math.PI*0.5,globeGroup.rotation.x));
-      touchPrev={x:e.touches[0].clientX,y:e.touches[0].clientY};
-    } else if(e.touches.length===2){
-      const dx=e.touches[0].clientX-e.touches[1].clientX;
-      const dy=e.touches[0].clientY-e.touches[1].clientY;
-      const dist=Math.sqrt(dx*dx+dy*dy);
+      touchPrev = {x:e.touches[0].clientX,y:e.touches[0].clientY};
+    } else if (e.touches.length === 2) {
+      const dx = e.touches[0].clientX-e.touches[1].clientX, dy = e.touches[0].clientY-e.touches[1].clientY;
+      const dist = Math.sqrt(dx*dx+dy*dy);
       camDist = Math.max(260,Math.min(1100, camDist-(dist-pinchStart)*0.5));
-      camera.position.z=camDist;
-      pinchStart=dist;
-      updateLOD();
+      camera.position.z = camDist; pinchStart = dist; updateLOD();
     }
-  },{passive:false});
-  c.addEventListener('touchend',()=>isDragging=false);
+  }, {passive:false});
+  c.addEventListener('touchend', () => isDragging = false);
 
-  window.addEventListener('resize',()=>{
-    camera.aspect=window.innerWidth/window.innerHeight;
+  window.addEventListener('resize', () => {
+    camera.aspect = window.innerWidth/window.innerHeight;
     camera.updateProjectionMatrix();
-    renderer.setSize(window.innerWidth,window.innerHeight);
+    renderer.setSize(window.innerWidth, window.innerHeight);
   });
 }
 
-// ── Clock ──────────────────────────────────────
-function updateClock(){
-  const d=new Date();
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// RENDER LOOP
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+function updateClock() {
+  const d = new Date();
   document.getElementById('clock').textContent =
     d.getHours().toString().padStart(2,'0')+':'+
     d.getMinutes().toString().padStart(2,'0')+':'+
     d.getSeconds().toString().padStart(2,'0');
 }
-
-// ── FPS ────────────────────────────────────────
-function calcFPS(){
-  const now=performance.now();
-  frameTimes.push(now);
-  frameTimes=frameTimes.filter(t=>now-t<1000);
+function calcFPS() {
+  const now = performance.now(); frameTimes.push(now);
+  frameTimes = frameTimes.filter(t => now-t < 1000);
   return frameTimes.length;
 }
 
-// ── Render loop ────────────────────────────────
-function animate(){
+function animate() {
   requestAnimationFrame(animate);
 
-  if(!isDragging){
-    globeGroup.rotation.y += 0.0008;
-    rotVel.x*=0.93; rotVel.y*=0.93;
-    if(Math.abs(rotVel.y)>0.00005) globeGroup.rotation.y+=rotVel.y;
-    if(Math.abs(rotVel.x)>0.00005) globeGroup.rotation.x+=rotVel.x;
-    globeGroup.rotation.x=Math.max(-Math.PI*0.5,Math.min(Math.PI*0.5,globeGroup.rotation.x));
+  // Auto-rotation
+  if (!isDragging) {
+    if      (rotationDir === 'west-east')  globeGroup.rotation.y += 0.0008;
+    else if (rotationDir === 'east-west')  globeGroup.rotation.y -= 0.0008;
+    // Drag momentum (always decays)
+    rotVel.x *= 0.93; rotVel.y *= 0.93;
+    if (Math.abs(rotVel.y) > 0.00005) globeGroup.rotation.y += rotVel.y;
+    if (Math.abs(rotVel.x) > 0.00005) globeGroup.rotation.x += rotVel.x;
+    globeGroup.rotation.x = Math.max(-Math.PI*0.5, Math.min(Math.PI*0.5, globeGroup.rotation.x));
   }
 
-  if(locationObj){
-    const t=Date.now()*0.0025;
-    const s1=1+0.45*Math.sin(t);
-    const s2=1+0.3*Math.sin(t*0.7+1);
-    locationObj.ring1.scale.set(s1,s1,1);
-    locationObj.ring2.scale.set(s2,s2,1);
-    locationObj.ring1.material.opacity=0.5+0.35*Math.abs(Math.sin(t));
-    locationObj.ring2.material.opacity=0.2+0.2*Math.abs(Math.sin(t*0.7));
+  // Background affection: stars follow globe rotation
+  if (starsGroup) {
+    if (bgAffection) {
+      starsGroup.rotation.copy(globeGroup.rotation);
+    } else {
+      // Smoothly float back to neutral
+      starsGroup.rotation.x *= 0.96;
+      starsGroup.rotation.y *= 0.96;
+      starsGroup.rotation.z *= 0.96;
+    }
+  }
+
+  // Location marker pulse
+  if (locationObj) {
+    const t = Date.now() * 0.0025;
+    const s1 = 1 + 0.45*Math.sin(t), s2 = 1 + 0.3*Math.sin(t*0.7+1);
+    locationObj.ring1.scale.set(s1,s1,1); locationObj.ring2.scale.set(s2,s2,1);
+    locationObj.ring1.material.opacity = 0.5 + 0.35*Math.abs(Math.sin(t));
+    locationObj.ring2.material.opacity = 0.2 + 0.2*Math.abs(Math.sin(t*0.7));
+  }
+
+  // Moon orbit
+  if (moonEnabled && moonMesh) {
+    moonAngle += 0.004;
+    const ORBIT_R = 380;
+    moonMesh.position.set(
+      Math.cos(moonAngle) * ORBIT_R,
+      Math.sin(moonAngle * 0.2) * 60,
+      Math.sin(moonAngle) * ORBIT_R
+    );
+    moonMesh.lookAt(0, 0, 0);
   }
 
   updateLabel();
   updateClock();
-  document.getElementById('fpsVal').textContent=calcFPS();
-  renderer.render(scene,camera);
+  document.getElementById('fpsVal').textContent = calcFPS();
+  renderer.render(scene, camera);
 }
 
-// ══════════════════════════════════════════════
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 // TOAST SYSTEM
-// ══════════════════════════════════════════════
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 let toastTimers = [];
-
-function showToast(type, tag, msg, autoDismissMs=0){
-  const container = document.getElementById('errorToast');
-  if(!container) return;
+function showToast(type, tag, msg, autoDismissMs=0) {
+  const ct = document.getElementById('errorToast');
+  if (!ct) return;
   const card = document.createElement('div');
-  card.className = 'err-card' + (type==='warn'?' warn' : type==='info'?' info' : '');
-  const time = new Date().toLocaleTimeString();
-  card.innerHTML =
-    '<div class="err-header">'+
-      '<span class="err-tag">'+tag+'</span>'+
-      '<span class="err-src">'+time+'</span>'+
-    '</div>'+
-    '<div class="err-msg">'+msg+'</div>';
-  container.appendChild(card);
-  if(autoDismissMs>0){
-    const t=setTimeout(()=>{
+  card.className = 'err-card' + (type==='warn'?' warn':type==='info'?' info':'');
+  card.innerHTML = '<div class="err-header"><span class="err-tag">'+tag+'</span><span class="err-src">'+new Date().toLocaleTimeString()+'</span></div><div class="err-msg">'+msg+'</div>';
+  ct.appendChild(card);
+  if (autoDismissMs > 0) {
+    const t = setTimeout(() => {
       card.style.opacity='0'; card.style.transition='opacity .4s';
-      setTimeout(()=>{ if(card.parentNode) card.remove(); },400);
-    },autoDismissMs);
+      setTimeout(() => { if(card.parentNode) card.remove(); }, 400);
+    }, autoDismissMs);
     toastTimers.push(t);
   }
-  return card;
 }
-
-function clearToasts(){
-  toastTimers.forEach(clearTimeout); toastTimers=[];
-  const c=document.getElementById('errorToast');
-  if(!c) return;
-  [...c.children].forEach(el=>{
+function clearToasts() {
+  toastTimers.forEach(clearTimeout); toastTimers = [];
+  const ct = document.getElementById('errorToast');
+  if (!ct) return;
+  [...ct.children].forEach(el => {
     el.style.opacity='0'; el.style.transition='opacity .3s';
-    setTimeout(()=>{ if(el.parentNode) el.remove(); },300);
+    setTimeout(() => { if(el.parentNode) el.remove(); }, 300);
   });
 }
 
-// ══════════════════════════════════════════════
-// GEOLOCATION — GPS THEN IP FALLBACK
-// ══════════════════════════════════════════════
-
-// Reverse-geocode lat/lng to city/country using a free API
-async function reverseGeocode(lat, lng){
-  try{
-    const url = `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json`;
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// GEOLOCATION
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+async function reverseGeocode(lat, lng) {
+  try {
     const r = await Promise.race([
-      fetch(url, {headers:{'Accept-Language':'en'}}),
-      new Promise((_,rej)=>setTimeout(()=>rej(new Error('Timeout')),5000))
+      fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json`, {headers:{'Accept-Language':'en'}}),
+      new Promise((_,rej) => setTimeout(() => rej(new Error('Timeout')), 5000))
     ]);
-    if(!r.ok) throw new Error('HTTP '+r.status);
+    if (!r.ok) throw new Error('HTTP ' + r.status);
     const d = await r.json();
-    const city    = d.address?.city || d.address?.town || d.address?.village || d.address?.county || 'Unknown';
-    const country = d.address?.country || 'Unknown';
-    return {city, country};
-  }catch(e){
-    return {city:'Your Location', country:''};
-  }
+    return {
+      city:    d.address?.city || d.address?.town || d.address?.village || d.address?.county || 'Unknown',
+      country: d.address?.country || 'Unknown'
+    };
+  } catch(e) { return { city:'Your Location', country:'' }; }
 }
 
-// Promise wrapper for getCurrentPosition
-function getGPSPosition(options={}){
-  return new Promise((resolve, reject)=>{
-    if(!navigator.geolocation){
-      reject(new Error('Geolocation not supported'));
-      return;
-    }
+function getGPSPosition() {
+  return new Promise((resolve, reject) => {
+    if (!navigator.geolocation) { reject(new Error('Geolocation not supported')); return; }
     navigator.geolocation.getCurrentPosition(resolve, reject, {
-      enableHighAccuracy: true,
-      timeout: 10000,
-      maximumAge: 0,
-      ...options
+      enableHighAccuracy:true, timeout:10000, maximumAge:0
     });
   });
 }
-
-// Check current permission state (non-blocking, best-effort)
-async function checkGeoPermission(){
-  if(!navigator.permissions) return 'prompt';
-  try{
-    const status = await navigator.permissions.query({name:'geolocation'});
-    return status.state; // 'granted' | 'denied' | 'prompt'
-  }catch(e){
-    return 'prompt';
-  }
+async function checkGeoPermission() {
+  if (!navigator.permissions) return 'prompt';
+  try { const s = await navigator.permissions.query({name:'geolocation'}); return s.state; }
+  catch(e) { return 'prompt'; }
 }
-
-// Show / hide the grant button
-function showGrantBtn(){
-  const btn = document.getElementById('grantLocBtn');
-  btn.classList.remove('hidden');
-  // Also shift stats panel up so they don't overlap
+function showGrantBtn() {
+  document.getElementById('grantLocBtn').classList.remove('hidden');
   document.getElementById('statsPanel').style.bottom = '62px';
 }
-function hideGrantBtn(){
-  const btn = document.getElementById('grantLocBtn');
-  btn.classList.add('hidden');
+function hideGrantBtn() {
+  document.getElementById('grantLocBtn').classList.add('hidden');
   document.getElementById('statsPanel').style.bottom = '14px';
 }
 
-// IP geolocation — multiple API fallback
 const IP_APIS = [
-  {
-    url:'https://ipwho.is/',
-    parse: d => ({
-      ip:d.ip, isp:d.connection?.isp||d.org||'',
-      city:d.city, region:d.region, country:d.country,
-      lat:parseFloat(d.latitude), lng:parseFloat(d.longitude),
-      ok: !d.message && d.success!==false
-    })
-  },
-  {
-    url:'https://ip-api.com/json/?fields=status,message,country,regionName,city,lat,lon,isp,org,query',
-    parse: d => ({
-      ip:d.query, isp:d.org||d.isp||'',
-      city:d.city, region:d.regionName, country:d.country,
-      lat:parseFloat(d.lat), lng:parseFloat(d.lon),
-      ok: d.status==='success'
-    })
-  },
-  {
-    url:'https://ipapi.co/json/',
-    parse: d => ({
-      ip:d.ip, isp:d.org||d.isp||'',
-      city:d.city, region:d.region, country:d.country_name||d.country,
-      lat:parseFloat(d.latitude), lng:parseFloat(d.longitude),
-      ok: !d.error
-    })
-  },
-  {
-    url:'https://freeipapi.com/api/json',
-    parse: d => ({
-      ip:d.ipAddress, isp:d.isp||'',
-      city:d.cityName, region:d.regionName, country:d.countryName,
-      lat:parseFloat(d.latitude), lng:parseFloat(d.longitude),
-      ok: !!d.ipAddress
-    })
-  },
+  { url:'https://ipwho.is/', parse:d=>({ip:d.ip,isp:d.connection?.isp||d.org||'',city:d.city,region:d.region,country:d.country,lat:parseFloat(d.latitude),lng:parseFloat(d.longitude),ok:!d.message&&d.success!==false}) },
+  { url:'https://ip-api.com/json/?fields=status,message,country,regionName,city,lat,lon,isp,org,query', parse:d=>({ip:d.query,isp:d.org||d.isp||'',city:d.city,region:d.regionName,country:d.country,lat:parseFloat(d.lat),lng:parseFloat(d.lon),ok:d.status==='success'}) },
+  { url:'https://ipapi.co/json/', parse:d=>({ip:d.ip,isp:d.org||d.isp||'',city:d.city,region:d.region,country:d.country_name||d.country,lat:parseFloat(d.latitude),lng:parseFloat(d.longitude),ok:!d.error}) },
+  { url:'https://freeipapi.com/api/json', parse:d=>({ip:d.ipAddress,isp:d.isp||'',city:d.cityName,region:d.regionName,country:d.countryName,lat:parseFloat(d.latitude),lng:parseFloat(d.longitude),ok:!!d.ipAddress}) },
 ];
 
-async function fetchIPLocation(){
-  const errs = [];
-  for(const api of IP_APIS){
-    try{
-      const hostname = new URL(api.url).hostname;
-      showToast('info','IP: '+hostname,'Attempting geolocation...', 2000);
-      const r = await Promise.race([
-        fetch(api.url),
-        new Promise((_,rej)=>setTimeout(()=>rej(new Error('Timeout 5s')),5000))
-      ]);
-      if(!r.ok) throw new Error('HTTP '+r.status+' '+r.statusText);
-      const raw = await r.json();
-      const d   = api.parse(raw);
-      if(!d.ok)         throw new Error('API returned failure status');
-      if(!d.lat||!d.lng) throw new Error('No coordinates in response');
-      clearToasts();
-      return d;
-    }catch(err){
+async function fetchIPLocation() {
+  for (const api of IP_APIS) {
+    try {
       const host = new URL(api.url).hostname;
-      errs.push({src:host, msg:err.message||String(err)});
-      showToast('warn','FAIL: '+host, err.message||String(err), 3000);
-      await new Promise(r=>setTimeout(r,300));
+      showToast('info','IP: '+host,'Attempting geolocation...', 2000);
+      const r = await Promise.race([fetch(api.url), new Promise((_,rej)=>setTimeout(()=>rej(new Error('Timeout')),5000))]);
+      if (!r.ok) throw new Error('HTTP '+r.status);
+      const raw = await r.json(); const d = api.parse(raw);
+      if (!d.ok) throw new Error('API failure');
+      if (!d.lat || !d.lng) throw new Error('No coordinates');
+      clearToasts(); return d;
+    } catch(e) {
+      showToast('warn','FAIL: '+new URL(api.url).hostname, e.message, 3000);
+      await new Promise(r => setTimeout(r,300));
     }
   }
-  return null; // all failed
+  return null;
 }
 
-// Apply an IP location result to the globe
-function applyIPLocation(d){
-  if(!d) return false;
-  const {ip, isp, city, region, country, lat, lng} = d;
-  document.getElementById('locIP').textContent     = ip      || '--';
-  document.getElementById('locISP').textContent    = (isp||'').length>24 ? isp.slice(0,24)+'…' : (isp||'--');
-  document.getElementById('locRegion').textContent = region  || '--';
-  buildLocationMarker(lat, lng, city||'Unknown', country||'Unknown', 'ip');
-  document.getElementById('locLabelSub').textContent = (ip||'')+'· '+lat.toFixed(2)+'° '+lng.toFixed(2)+'°';
+function applyIPLocation(d) {
+  if (!d) return false;
+  document.getElementById('locIP').textContent  = d.ip  || '--';
+  document.getElementById('locISP').textContent = (d.isp||'').length>24 ? d.isp.slice(0,24)+'…' : (d.isp||'--');
+  document.getElementById('locRegion').textContent = d.region||'--';
+  buildLocationMarker(d.lat, d.lng, d.city||'Unknown', d.country||'Unknown', 'ip');
   clearToasts();
-  showToast('info','IP LOCK', (ip||'?')+' · '+(city||'?')+', '+(country||'?'), 4000);
+  showToast('info','IP LOCK',(d.ip||'?')+' · '+(d.city||'?')+', '+(d.country||'?'), 4000);
   return true;
 }
 
-// Apply a GPS fix to the globe
-async function applyGPSLocation(position){
-  const lat = position.coords.latitude;
-  const lng = position.coords.longitude;
-
+async function applyGPSLocation(position) {
+  const lat = position.coords.latitude, lng = position.coords.longitude;
   showToast('info','GPS LOCK','Resolving city name...', 3000);
-  const {city, country} = await reverseGeocode(lat, lng);
-
-  // Keep IP info if already loaded, just update coords
-  const currentIP = document.getElementById('locIP').textContent;
-  if(!currentIP || currentIP === 'Scanning...' || currentIP === '--'){
-    document.getElementById('locIP').textContent = 'GPS';
-  }
-  document.getElementById('locRegion').textContent = country || '--';
-
+  const { city, country } = await reverseGeocode(lat, lng);
+  const curIP = document.getElementById('locIP').textContent;
+  if (!curIP || curIP==='Scanning...' || curIP==='--') document.getElementById('locIP').textContent = 'GPS';
+  document.getElementById('locRegion').textContent = country||'--';
   buildLocationMarker(lat, lng, city, country, 'gps');
   clearToasts();
   showToast('info','GPS ACQUIRED', city+', '+country+' · '+lat.toFixed(4)+'° '+lng.toFixed(4)+'°', 5000);
 }
 
-// ── Grant button handler ──────────────────────
-async function requestGPSAndApply(){
+async function requestGPSAndApply() {
   const btn = document.getElementById('grantLocBtn');
-  btn.textContent = 'Requesting...';
-  btn.style.pointerEvents = 'none';
-
-  try{
+  btn.textContent = 'Requesting...'; btn.style.pointerEvents = 'none';
+  try {
     showToast('info','GPS','Requesting location permission...', 3000);
-    const position = await getGPSPosition();
-    geoPermissionState = 'granted';
-    hideGrantBtn();
-    await applyGPSLocation(position);
-  }catch(err){
-    btn.innerHTML = '<div class="btn-icon"></div> Grant Location Permission';
+    const pos = await getGPSPosition();
+    geoPermissionState = 'granted'; hideGrantBtn(); await applyGPSLocation(pos);
+  } catch(err) {
+    btn.innerHTML = '<div class="btn-pulse"></div> Grant Location Permission';
     btn.style.pointerEvents = 'all';
-    const code = err.code;
-    if(code === 1){
-      // User denied
-      geoPermissionState = 'denied';
-      showToast('warn','GPS DENIED','Permission denied — using IP location', 4000);
-      hideGrantBtn(); // They explicitly denied, no point showing button
-    } else if(code === 2){
-      showToast('warn','GPS ERROR','Position unavailable — try again', 4000);
-    } else if(code === 3){
-      showToast('warn','GPS TIMEOUT','Location request timed out — try again', 4000);
-    } else {
-      showToast('warn','GPS ERROR', err.message||'Unknown error', 4000);
-    }
+    if      (err.code===1) { geoPermissionState='denied'; showToast('warn','GPS DENIED','Permission denied — using IP',4000); hideGrantBtn(); }
+    else if (err.code===2) showToast('warn','GPS ERROR','Position unavailable',4000);
+    else if (err.code===3) showToast('warn','GPS TIMEOUT','Request timed out',4000);
+    else                   showToast('warn','GPS ERROR', err.message||'Unknown error', 4000);
   }
 }
 
-// ══════════════════════════════════════════════
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 // MAIN INIT
-// ══════════════════════════════════════════════
-async function main(){
-  // Scene setup
-  scene = new THREE.Scene();
-  camera = new THREE.PerspectiveCamera(45, window.innerWidth/window.innerHeight, 1, 5000);
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+async function main() {
+  scene    = new THREE.Scene();
+  camera   = new THREE.PerspectiveCamera(45, window.innerWidth/window.innerHeight, 1, 5000);
   camera.position.z = camDist;
-
   renderer = new THREE.WebGLRenderer({canvas:document.getElementById('c'), antialias:true, alpha:true});
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
@@ -895,160 +931,120 @@ async function main(){
 
   makeStars();
   makeAtmosphere();
+  makeSun();
+  makeMoon();
   setupEvents();
   animate();
 
-  // Wire up grant button
   document.getElementById('grantLocBtn').addEventListener('click', requestGPSAndApply);
 
-  setLoad(10,'Fetching world topology...');
+  setLoad(10, 'Fetching world topology...');
   let topo;
-  try{
-    topo = await fetch('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json').then(r=>r.json());
-  }catch(e){
-    setLoad(10,'CDN failed: '+e.message); return;
-  }
+  try { topo = await fetch('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json').then(r=>r.json()); }
+  catch(e) { setLoad(10, 'CDN failed: '+e.message); return; }
 
-  setLoad(30,'Drawing land mask...');
+  setLoad(30, 'Drawing land mask...');
   const land      = topojson.feature(topo, topo.objects.land);
   const countries = topojson.feature(topo, topo.objects.countries);
   const borders   = topojson.mesh(topo, topo.objects.countries);
-
   document.getElementById('countryCount').textContent = countries.features.length;
 
-  // Build land mask on offscreen canvas
   const MW=2048, MH=1024;
-  const mc = document.createElement('canvas');
-  mc.width=MW; mc.height=MH;
+  const mc = document.createElement('canvas'); mc.width=MW; mc.height=MH;
   const mctx = mc.getContext('2d');
-  mctx.fillStyle='#000'; mctx.fillRect(0,0,MW,MH);
-  mctx.fillStyle='#fff';
+  mctx.fillStyle='#000'; mctx.fillRect(0,0,MW,MH); mctx.fillStyle='#fff';
 
-  function drawGeomToMask(geom){
-    const {type,coordinates}=geom;
-    function drawRing(ring){
-      if(!ring||ring.length<3) return;
+  function drawGeomToMask(geom) {
+    const { type, coordinates } = geom;
+    function drawRing(ring) {
+      if (!ring||ring.length<3) return;
       mctx.beginPath();
       mctx.moveTo((ring[0][0]+180)/360*MW, (90-ring[0][1])/180*MH);
-      for(let i=1;i<ring.length;i++) mctx.lineTo((ring[i][0]+180)/360*MW,(90-ring[i][1])/180*MH);
+      for (let i=1;i<ring.length;i++) mctx.lineTo((ring[i][0]+180)/360*MW,(90-ring[i][1])/180*MH);
       mctx.closePath(); mctx.fill();
     }
-    if(type==='Polygon') drawRing(coordinates[0]);
-    else if(type==='MultiPolygon') coordinates.forEach(p=>drawRing(p[0]));
-    else if(type==='GeometryCollection') geom.geometries.forEach(drawGeomToMask);
+    if      (type==='Polygon')           drawRing(coordinates[0]);
+    else if (type==='MultiPolygon')      coordinates.forEach(p=>drawRing(p[0]));
+    else if (type==='GeometryCollection') geom.geometries.forEach(drawGeomToMask);
   }
-
-  if(land.type==='Feature') drawGeomToMask(land.geometry);
-  else if(land.type==='FeatureCollection') land.features.forEach(f=>drawGeomToMask(f.geometry));
+  if      (land.type==='Feature')           drawGeomToMask(land.geometry);
+  else if (land.type==='FeatureCollection') land.features.forEach(f=>drawGeomToMask(f.geometry));
 
   const imgData = mctx.getImageData(0,0,MW,MH).data;
-  function isLand(lat,lng){
-    const x=Math.max(0,Math.min(MW-1,Math.floor(((lng+180)%360)/360*MW)));
-    const y=Math.max(0,Math.min(MH-1,Math.floor((90-lat)/180*MH)));
-    return imgData[(y*MW+x)*4]>128;
+  function isLand(lat, lng) {
+    const x = Math.max(0, Math.min(MW-1, Math.floor(((lng+180)%360)/360*MW)));
+    const y = Math.max(0, Math.min(MH-1, Math.floor((90-lat)/180*MH)));
+    return imgData[(y*MW+x)*4] > 128;
   }
 
-  setLoad(50,'Generating dot field LODs...');
+  setLoad(50, 'Generating dot field LODs...');
   const tex = makeDotTex();
-
-  const lodConfigs = [{key:'low',res:3.0},{key:'med',res:2.0},{key:'high',res:1.2}];
-  for(const {key,res} of lodConfigs){
+  for (const {key,res} of [{key:'low',res:3.0},{key:'med',res:2.0},{key:'high',res:1.2}]) {
     const {mesh,count} = buildDots(res, isLand, tex);
-    dotMeshes[key] = mesh;
-    mesh.visible = (key===currentLOD);
-    globeGroup.add(mesh);
-    if(key===currentLOD) document.getElementById('dotCount').textContent=count.toLocaleString();
+    dotMeshes[key] = mesh; mesh.visible = (key===currentLOD); globeGroup.add(mesh);
+    if (key===currentLOD) document.getElementById('dotCount').textContent = count.toLocaleString();
   }
 
-  setLoad(75,'Building country borders...');
+  setLoad(75, 'Building country borders...');
   buildBorders(borders);
 
-  setLoad(88,'Locating your position...');
-
-  // ── Step 1: Check existing permission state ──
+  setLoad(88, 'Locating your position...');
   geoPermissionState = await checkGeoPermission();
 
-  if(geoPermissionState === 'granted'){
-    // Permission already granted — get GPS immediately
-    showToast('info','GPS','Permission already granted, acquiring signal...', 3000);
-    try{
-      const position = await getGPSPosition();
-      await applyGPSLocation(position);
-      hideGrantBtn();
-    }catch(gpsErr){
-      showToast('warn','GPS FALLBACK','GPS failed: '+gpsErr.message+' — trying IP...', 3000);
-      const ipData = await fetchIPLocation();
-      if(!applyIPLocation(ipData)){
-        buildLocationMarker(23.35, 85.33, 'Jharkhand, India', 'India', 'ip');
-        document.getElementById('locCity').textContent = 'Jharkhand';
-        showToast('warn','ALL FAILED','Could not determine location — showing default', 5000);
-      }
-      // Still hide button since they already granted GPS
+  if (geoPermissionState === 'granted') {
+    showToast('info','GPS','Permission granted, acquiring signal...', 3000);
+    try {
+      const pos = await getGPSPosition(); await applyGPSLocation(pos); hideGrantBtn();
+    } catch(e) {
+      showToast('warn','GPS FALLBACK','GPS failed — trying IP...', 3000);
+      const ip = await fetchIPLocation();
+      if (!applyIPLocation(ip)) buildLocationMarker(23.35,85.33,'Jharkhand, India','India','ip');
       hideGrantBtn();
     }
-  } else if(geoPermissionState === 'denied'){
-    // Already denied — go straight to IP, no button needed
-    showToast('warn','GPS DENIED','Location permission was denied — using IP', 3000);
-    const ipData = await fetchIPLocation();
-    if(!applyIPLocation(ipData)){
-      buildLocationMarker(23.35, 85.33, 'Jharkhand, India', 'India', 'ip');
-    }
+  } else if (geoPermissionState === 'denied') {
+    showToast('warn','GPS DENIED','Permission denied — using IP', 3000);
+    const ip = await fetchIPLocation();
+    if (!applyIPLocation(ip)) buildLocationMarker(23.35,85.33,'Jharkhand, India','India','ip');
     hideGrantBtn();
   } else {
-    // State is 'prompt' — try GPS (will show browser permission dialog)
     showToast('info','GPS','Requesting location permission...', 4000);
-    let gpsSuccess = false;
-    try{
-      const position = await getGPSPosition();
-      geoPermissionState = 'granted';
-      await applyGPSLocation(position);
-      gpsSuccess = true;
-      hideGrantBtn();
-      clearToasts();
-    }catch(gpsErr){
-      if(gpsErr.code === 1){
-        // User dismissed/denied the prompt
-        geoPermissionState = 'denied';
-        showToast('warn','GPS DENIED','Permission denied — using IP location', 3000);
-        clearToasts();
-        // Show the grant button so they can change their mind
-        showGrantBtn();
+    let gpsOk = false;
+    try {
+      const pos = await getGPSPosition(); geoPermissionState='granted';
+      await applyGPSLocation(pos); gpsOk=true; hideGrantBtn(); clearToasts();
+    } catch(e) {
+      if (e.code===1) {
+        geoPermissionState='denied';
+        showToast('warn','GPS DENIED','Permission denied — using IP', 3000);
+        clearToasts(); showGrantBtn();
       } else {
-        showToast('warn','GPS ERROR', gpsErr.message||'GPS unavailable', 3000);
+        showToast('warn','GPS ERROR', e.message||'GPS unavailable', 3000);
         showGrantBtn();
       }
     }
-
-    // Regardless of GPS result, also fetch IP location
-    // (IP will be the fallback if GPS failed; if GPS succeeded we still
-    //  want the IP/ISP info populated in the panel)
     const ipData = await fetchIPLocation();
-    if(!gpsSuccess){
-      // GPS failed — apply IP location to globe
-      if(!applyIPLocation(ipData)){
-        buildLocationMarker(23.35, 85.33, 'Jharkhand, India', 'India', 'ip');
-        showToast('warn','ALL FAILED','Could not geolocate — showing default', 5000);
+    if (!gpsOk) {
+      if (!applyIPLocation(ipData)) {
+        buildLocationMarker(23.35,85.33,'Jharkhand, India','India','ip');
+        showToast('warn','ALL FAILED','Showing default location', 5000);
       }
-    } else {
-      // GPS succeeded — just populate IP/ISP text fields from IP API
-      if(ipData){
-        document.getElementById('locIP').textContent  = ipData.ip  || '--';
-        document.getElementById('locISP').textContent = (ipData.isp||'').length>24 ? ipData.isp.slice(0,24)+'…' : (ipData.isp||'--');
-      }
+    } else if (ipData) {
+      document.getElementById('locIP').textContent  = ipData.ip  || '--';
+      document.getElementById('locISP').textContent = (ipData.isp||'').length>24 ? ipData.isp.slice(0,24)+'…' : (ipData.isp||'--');
     }
   }
 
-  setLoad(100,'Ready!');
-  await new Promise(r=>setTimeout(r,400));
-  document.getElementById('loadScreen').style.display='none';
-  document.getElementById('hud').style.display='block';
+  setLoad(100, 'Ready!');
+  await new Promise(r => setTimeout(r, 400));
+  document.getElementById('loadScreen').style.display = 'none';
+  document.getElementById('hud').style.display = 'block';
   updateLOD();
 }
 
-main().catch(e=>{
+main().catch(e => {
   console.error(e);
-  document.getElementById('loadMsg').textContent='Error: '+e.message;
+  document.getElementById('loadMsg').textContent = 'Error: ' + e.message;
 });
 </script>
 </body>
-</html>
+</html>  
